@@ -27,6 +27,8 @@ class CustomWindow extends HTMLElement {
                     border: 0.5px solid var(--withe-contrast);
                     box-shadow: -1px 10px 20px #00000080;
                     max-height: 100vh;
+                    user-select: none;
+                    -webkit-user-select: none;
                 }
 
                 .window:not(.selected) .big,
@@ -44,7 +46,6 @@ class CustomWindow extends HTMLElement {
                 .window .bar {
                     min-width: 60px;
                     border-bottom: solid 1px var(--withe-contrast);
-                    user-select: none;
                     padding: 5px 12px;
                     box-sizing: border-box;
                     display: flex;
@@ -61,6 +62,8 @@ class CustomWindow extends HTMLElement {
                     width: 100%;
                     padding: 5px 12px;
                     box-sizing: border-box;
+                    user-select: text;
+                    -webkit-user-select: text;
                 }
 
                 .window.expanded .content {
