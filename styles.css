@@ -37,6 +37,47 @@ custom-window.selected {
     z-index: 12;
 }
 
+.topBar .barEnd {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.topBar .barEnd .lang {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.langMenu {
+    position: absolute;
+    top: 32px;
+    left: -25px;
+    width: 66px;
+    border: 0.5px solid var(--withe-contrast);
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 5px 1px;
+    z-index: 1000;
+}
+
+.langMenu span.lang {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+.langMenu .lang.selected {
+    background-color: var(--withe-contrast);
+    color: black;
+}
+
+.langMenu .lang:hover {
+    background-color: white;
+    color: black;}
+
 .topBar::after {
     content: "";
     position: absolute;

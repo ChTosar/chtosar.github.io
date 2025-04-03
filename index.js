@@ -1,7 +1,43 @@
-
 import "./windows.js";
 
-window.onload = () => {
+const lang = {};
+let actualLang;
+const availableLanguages = ["en-US", "es-ES", "gl-ES", "ca-ES", "pt-PT", "fr-FR", "de-DE", "it-IT", "zh-CN", "ja-JP", "ar", "ru-RU", "vi-VN", "uk-UA"];
+
+async function loadLanguage(language) {
+    const userLang = (language || navigator.language || "en-US");
+    const baseLang = userLang.split("-")[0];
+
+    if (availableLanguages.includes(userLang)) {
+        try {
+            const response = await fetch(`./lang/${userLang}.json`);
+            Object.assign(lang, await response.json());
+            actualLang = userLang;
+            return;
+        } catch (error) {
+            console.error(`Error loading language file for ${userLang}:`, error);
+        }
+    }
+
+    const partialMatch = availableLanguages.find(langCode => langCode.startsWith(baseLang));
+    if (partialMatch) {
+        try {
+            const response = await fetch(`./lang/${partialMatch}.json`);
+            Object.assign(lang, await response.json());
+            actualLang = userLang;
+            return;
+        } catch (error) {
+            console.error(`Error loading language file for ${partialMatch}:`, error);
+        }
+    }
+
+    console.warn(`Falling back to default language.`);
+    const response = await fetch('./lang/en-us.json');
+    Object.assign(lang, await response.json());
+}
+
+window.onload = async () => {
+    await loadLanguage();
 
     function updateTime() {
         const elementoHora = document.querySelector('.topBar time');
@@ -18,7 +54,7 @@ window.onload = () => {
     updateTime();
 
     window.defaultTitle = () => {
-        document.querySelector('.topBar .title').textContent = 'Tosar.eu';
+        document.querySelector('.topBar .title').textContent = lang.defaultTitle;
     };
 
     document.querySelector('container .main').addEventListener('click', () => {
@@ -31,6 +67,32 @@ window.onload = () => {
 
     document.querySelector('.topBar .actions .close').addEventListener('click', () => {
         document.querySelector('custom-window.expanded.selected').close();
+    });
+
+    document.querySelector('.topBar .lang').addEventListener('click', () => {
+        const langMenu = document.querySelector('.topBar .lang .langMenu');
+        if (langMenu) {
+            langMenu.remove();
+        } else {
+            const newLangMenu = document.createElement('div');
+            newLangMenu.classList.add('langMenu');
+
+            availableLanguages.forEach(langCode => {
+                const langItem = document.createElement('span');
+                langItem.classList.add('lang');
+                if(langCode === actualLang) {
+                    langItem.classList.add('selected');
+                }
+                langItem.textContent = langCode;
+                langItem.addEventListener('click', async () => {
+                    await loadLanguage(langCode);
+                    actualLang = langCode;
+                    newLangMenu.remove();
+                });
+                newLangMenu.appendChild(langItem);
+            });
+            document.querySelector('.topBar .lang').appendChild(newLangMenu);
+        }
     });
 
     function reglaDeTres(valor) {
@@ -51,7 +113,7 @@ window.onload = () => {
             behavior: 'smooth'
         });
 
-        document.querySelector('.title').textContent = 'Tosar.eu';
+        document.querySelector('.title').textContent = lang.defaultTitle;
     });
 
     document.querySelector('.leftBar .icon.photos').addEventListener('click', () => {
@@ -74,7 +136,7 @@ window.onload = () => {
     
             document.querySelector('container').appendChild(newElement);
     
-            newElement.title = 'Fotos';
+            newElement.title = lang.photosTitle;
             newElement.classList.add('selected');
             newElement.classList.add('photos');
 
@@ -118,24 +180,24 @@ window.onload = () => {
                 <div class="links">
                     <a href="https://github.com/ChTosar/" target="_blank">
                         <svg aria-hidden="true" focusable="false" class="" viewBox="0 0 24 24" width="18" height="18" fill="white" style="display:inline-block;user-select:none;vertical-align:top;overflow:visible"><path d="M12.5.75C6.146.75 1 5.896 1 12.25c0 5.089 3.292 9.387 7.863 10.91.575.101.79-.244.79-.546 0-.273-.014-1.178-.014-2.142-2.889.532-3.636-.704-3.866-1.35-.13-.331-.69-1.352-1.18-1.625-.402-.216-.977-.748-.014-.762.906-.014 1.553.834 1.769 1.179 1.035 1.74 2.688 1.25 3.349.948.1-.747.402-1.25.733-1.538-2.559-.287-5.232-1.279-5.232-5.678 0-1.25.445-2.285 1.178-3.09-.115-.288-.517-1.467.115-3.048 0 0 .963-.302 3.163 1.179.92-.259 1.897-.388 2.875-.388.977 0 1.955.13 2.875.388 2.2-1.495 3.162-1.179 3.162-1.179.633 1.581.23 2.76.115 3.048.733.805 1.179 1.825 1.179 3.09 0 4.413-2.688 5.39-5.247 5.678.417.36.776 1.05.776 2.128 0 1.538-.014 2.774-.014 3.162 0 .302.216.662.79.547C20.709 21.637 24 17.324 24 12.25 24 5.896 18.854.75 12.5.75Z"></path></svg>
-                        <span>GitHub</span>
+                        <span>${lang.githubLink}</span>
                     </a>
                     <a href="https://www.npmjs.com/~chtosar" target="_blank">
                         <svg viewBox="0 0 27.23 27.23" aria-hidden="true" width="18" height="18" ><rect fill="white" width="27.23" height="27.23" rx="2"></rect><polygon fill="black" points="5.8 21.75 13.66 21.75 13.67 9.98 17.59 9.98 17.58 21.76 21.51 21.76 21.52 6.06 5.82 6.04 5.8 21.75"></polygon></svg>
-                        <span>npm profile</span>
+                        <span>${lang.npmProfileLink}</span>
                     </a>
                 </div>
             </div>`;
     
             newElement.setAttribute('min-width', '185');
             newElement.setAttribute('min-height', '130');
-            newElement.title = 'Proyectos';
+            newElement.title = lang.aboutTitle;
             newElement.classList.add('selected');
             newElement.classList.add('about');
             document.querySelector('container').appendChild(newElement);
             newElement.center({top: 25});
 
-            typeWriterEffect(document.querySelector('.linkList .text'), 'My public proyects:').then(() => {
+            typeWriterEffect(document.querySelector('.linkList .text'), lang.aboutText).then(() => {
                 document.querySelector('.linkList .links').style.display = 'block';
 
                 document.querySelector('.linkList').addEventListener('keydown', (event) => {
@@ -195,12 +257,12 @@ window.onload = () => {
             const newElement = document.createElement('custom-window');
 
             newElement.innerHTML = `<div class="contact">
-            <span>Send me an email to: <a class="emailLink" href="mailto:christian@tosar.eu">christian@tosar.eu</a>
+            <span>${lang.contactEmailText} <a class="emailLink" href="mailto:christian@tosar.eu">christian@tosar.eu</a>
             <svg class="copyEmail" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="18px" height="18" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
                 <path d="M29.5,7h-19A1.5,1.5,0,0,0,9,8.5v24A1.5,1.5,0,0,0,10.5,34h19A1.5,1.5,0,0,0,31,32.5V8.5A1.5,1.5,0,0,0,29.5,7ZM29,32H11V9H29Z" class="clr-i-outline clr-i-outline-path-1"/><path d="M26,3.5A1.5,1.5,0,0,0,24.5,2H5.5A1.5,1.5,0,0,0,4,3.5v24A1.5,1.5,0,0,0,5.5,29H6V4H26Z" class="clr-i-outline clr-i-outline-path-2"/>
                 <rect x="0" y="0" width="36" height="36" fill-opacity="0"/>
             </svg></span>
-            </br><span> or chekck my 
+            </br><span>${lang.linkedinText}
                 <a href="https://www.linkedin.com/in/christian-tosar-2bb91080/" target="_blank">
                     Linkedin
                 </a>
@@ -209,7 +271,7 @@ window.onload = () => {
 
             newElement.setAttribute('no-resize', '');
             newElement.setAttribute('no-expand', '');
-            newElement.title = 'Contacto';
+            newElement.title = lang.contactTitle;
             newElement.classList.add('selected');
             newElement.classList.add('contact');
             document.querySelector('container').appendChild(newElement);

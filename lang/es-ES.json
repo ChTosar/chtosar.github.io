@@ -1,0 +1,12 @@
+{
+    "defaultTitle": "Tosar.eu",
+    "photosTitle": "Fotos",
+    "aboutTitle": "Proyectos",
+    "aboutText": "Mis proyectos públicos:",
+    "githubLink": "GitHub",
+    "npmProfileLink": "perfil de npm",
+    "contactTitle": "Contacto",
+    "contactEmailText": "Envíame un correo a:",
+    "linkedinText": "o visita mi Linkedin",
+    "emailCopied": "¡Correo copiado!"
+}

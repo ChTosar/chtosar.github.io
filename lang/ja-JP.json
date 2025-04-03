@@ -1,0 +1,12 @@
+{
+    "defaultTitle": "Tosar.eu",
+    "photosTitle": "写真",
+    "aboutTitle": "プロジェクト",
+    "aboutText": "私の公開プロジェクト：",
+    "githubLink": "GitHub",
+    "npmProfileLink": "npm プロフィール",
+    "contactTitle": "連絡先",
+    "contactEmailText": "メールを送る：",
+    "linkedinText": "または私の Linkedin を訪問してください",
+    "emailCopied": "メールがコピーされました！"
+}

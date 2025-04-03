@@ -1,0 +1,12 @@
+{
+    "defaultTitle": "Tosar.eu",
+    "photosTitle": "照片",
+    "aboutTitle": "项目",
+    "aboutText": "我的公开项目：",
+    "githubLink": "GitHub",
+    "npmProfileLink": "npm 个人资料",
+    "contactTitle": "联系",
+    "contactEmailText": "发送电子邮件至：",
+    "linkedinText": "或访问我的 Linkedin",
+    "emailCopied": "电子邮件已复制！"
+}
