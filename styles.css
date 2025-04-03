@@ -235,7 +235,6 @@ container .about span {
 .close { background-color: #f44336; }
 
 .linkList {
-    min-width: 300px;
     width: 100%;
     outline: none;
 }
@@ -307,15 +306,15 @@ container .about span {
     100% {left: 0;}
 }
 
-container .contact.expanded .contact {
+custom-window.expanded .contact {
     padding-top: 2rem;
 }
-container .contact {
+custom-window .contact {
     padding: 1rem;
+    min-width: 355px;
 }
 
-
-container .contact .emailLink.copied::after {
+custom-window .contact .emailLink.copied::after {
     content: "Copied!";
     position: fixed;
     top: 0.5rem;
@@ -330,17 +329,17 @@ container .contact .emailLink.copied::after {
     border-radius: 5px;
 }
 
-container .contact span {
+custom-window .contact span {
     display: flex;
     align-items: center;
     gap: 0.5rem;
     max-width: 100%;
 }
 
-container .contact span svg {
+custom-window .contact span svg {
     cursor: pointer;
 }
-container .contact a{
+custom-window .contact a{
     text-decoration: none;
     color: var(--withe-contrast);    
 }

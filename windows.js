@@ -12,6 +12,14 @@ class CustomWindow extends HTMLElement {
     connectedCallback() {
         this.render();
         this.addEventListeners();
+
+        if (this.hasAttribute('no-expand')) {
+            this.shadowRoot.querySelector('.actions .big').style.display = 'none';
+        }
+
+        if (this.hasAttribute('no-resize')) {
+            this.windowDiv.classList.add('no-resize');
+        }
     }
 
     render() {
@@ -29,6 +37,11 @@ class CustomWindow extends HTMLElement {
                     max-height: 100vh;
                     user-select: none;
                     -webkit-user-select: none;
+                }
+
+                .window.no-resize {
+                    resize: none;
+                    cursor: default;
                 }
 
                 .window:not(.selected) .big,
@@ -52,7 +65,7 @@ class CustomWindow extends HTMLElement {
                     justify-content: space-between;
                 }
 
-                .window.expanded .bar{
+                .window.expanded .bar {
                     display: none;
                 }
 
@@ -130,9 +143,9 @@ class CustomWindow extends HTMLElement {
     addEventListeners() {
         let offsetX = 0, offsetY = 0;
 
-        const maxTop = document.querySelector('.topBar').offsetHeight+1;//TODO parameters
-        const maxLeft = - 160;
-    
+        const maxTop = document.querySelector('.topBar').offsetHeight + 1; // TODO parameters
+        const maxLeft = -160;
+
         this.header.addEventListener("mousedown", (e) => {
             offsetX = e.clientX - this.windowDiv.offsetLeft;
             offsetY = e.clientY - this.windowDiv.offsetTop;
@@ -140,9 +153,8 @@ class CustomWindow extends HTMLElement {
             document.addEventListener("mousemove", onMouseMove);
             document.addEventListener("mouseup", onMouseUp);
         });
-    
-        const onMouseMove = (e) => {
 
+        const onMouseMove = (e) => {
             let newTop = e.clientY - offsetY;
             let newLeft = e.clientX - offsetX;
 
@@ -158,7 +170,7 @@ class CustomWindow extends HTMLElement {
             this.windowDiv.style.top = `${newTop}px`;
             this.windowDiv.style.width = `${this.windowDiv.clientWidth}px`;
         };
-    
+
         const onMouseUp = () => {
             document.removeEventListener("mousemove", onMouseMove);
             document.removeEventListener("mouseup", onMouseUp);
@@ -173,11 +185,16 @@ class CustomWindow extends HTMLElement {
             this.close();
         });
 
-        this.shadowRoot.querySelector('.actions .big').addEventListener("click", () => {
-            this.toggleExpand();
-        });
+        if (!this.hasAttribute('no-resize')) {
+            this.resize();
+        }
 
-        this.resize();
+        if (!this.hasAttribute('no-expand')) {
+            this.shadowRoot.querySelector('.actions .big').addEventListener("click", () => {
+                this.toggleExpand();
+            });
+        }
+
         this.observeClassChanges();
     }
 
@@ -337,6 +354,10 @@ class CustomWindow extends HTMLElement {
         });
 
         const resize = (e) => {
+
+            const minWidth = parseInt(this.getAttribute('minWidth')) || 100;
+            const minHeight = parseInt(this.getAttribute('minHeight')) || 50;
+
             if (isResizing) {
                 let newWidth = startWidth;
                 let newHeight = startHeight;
@@ -360,11 +381,11 @@ class CustomWindow extends HTMLElement {
                     newTop = startTop + diffY;
                 }
 
-                if (newWidth > 100) {
+                if (newWidth > minWidth) {
                     this.windowDiv.style.width = newWidth + 'px';
                     this.windowDiv.style.left = newLeft + 'px';
                 }
-                if (newHeight > 50) {
+                if (newHeight > minHeight) {
                     this.windowDiv.style.height = newHeight + 'px';
                     this.windowDiv.style.top = newTop + 'px';
                 }

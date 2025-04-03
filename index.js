@@ -127,11 +127,13 @@ window.onload = () => {
                 </div>
             </div>`;
     
-            document.querySelector('container').appendChild(newElement);
-    
+            newElement.setAttribute('minWidth', '185');
+            newElement.setAttribute('minHeight', '130');
             newElement.title = 'Proyectos';
             newElement.classList.add('selected');
             newElement.classList.add('about');
+            document.querySelector('container').appendChild(newElement);
+
 
             typeWriterEffect(document.querySelector('.linkList .text'), 'My public proyects:').then(() => {
                 document.querySelector('.linkList .links').style.display = 'block';
@@ -204,12 +206,13 @@ window.onload = () => {
                 </a>
             </span>
             </div>`;
-    
-            document.querySelector('container').appendChild(newElement);
 
+            newElement.setAttribute('no-resize', '');
+            newElement.setAttribute('no-expand', '');
             newElement.title = 'Contacto';
             newElement.classList.add('selected');
             newElement.classList.add('contact');
+            document.querySelector('container').appendChild(newElement);
             newElement.center();
 
             document.querySelector('.contact .copyEmail').addEventListener('click', () => {
