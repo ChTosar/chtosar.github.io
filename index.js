@@ -127,13 +127,13 @@ window.onload = () => {
                 </div>
             </div>`;
     
-            newElement.setAttribute('minWidth', '185');
-            newElement.setAttribute('minHeight', '130');
+            newElement.setAttribute('min-width', '185');
+            newElement.setAttribute('min-height', '130');
             newElement.title = 'Proyectos';
             newElement.classList.add('selected');
             newElement.classList.add('about');
             document.querySelector('container').appendChild(newElement);
-
+            newElement.center({top: 25});
 
             typeWriterEffect(document.querySelector('.linkList .text'), 'My public proyects:').then(() => {
                 document.querySelector('.linkList .links').style.display = 'block';

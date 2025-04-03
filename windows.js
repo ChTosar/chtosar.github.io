@@ -10,6 +10,8 @@ class CustomWindow extends HTMLElement {
     }
 
     connectedCallback() {
+        this.minWidth = this.getAttribute('min-width') || 100;
+        this.minHeight = this.getAttribute('min-height') || 60;
         this.render();
         this.addEventListeners();
 
@@ -29,8 +31,10 @@ class CustomWindow extends HTMLElement {
                     border-radius: 8px;
                     backdrop-filter: blur(4px);
                     position: fixed;
+                    min-width: ${this.minWidth}px;
+                    min-height: ${this.minHeight}px;
                     top: 60px;
-                    left: 150px;
+                    left: 120px;
                     background: #0000008a;
                     border: 0.5px solid var(--withe-contrast);
                     box-shadow: -1px 10px 20px #00000080;
@@ -300,9 +304,10 @@ class CustomWindow extends HTMLElement {
         }
     }
 
-    center() {
-        this.windowDiv.style.top = `calc(50% - ${this.windowDiv.offsetHeight}px)`;
-        this.windowDiv.style.left = `calc(50% - ${this.windowDiv.offsetWidth}px)`;
+    center(options = {}) {
+        const { top = 50, left = 50 } = options;
+        this.windowDiv.style.top = `calc(${top}% - ${this.windowDiv.offsetHeight/2}px)`;
+        this.windowDiv.style.left = `calc(${left}% - ${this.windowDiv.offsetWidth/2}px)`;
     }
 
     resize() {
@@ -355,9 +360,6 @@ class CustomWindow extends HTMLElement {
 
         const resize = (e) => {
 
-            const minWidth = parseInt(this.getAttribute('minWidth')) || 100;
-            const minHeight = parseInt(this.getAttribute('minHeight')) || 50;
-
             if (isResizing) {
                 let newWidth = startWidth;
                 let newHeight = startHeight;
@@ -381,11 +383,11 @@ class CustomWindow extends HTMLElement {
                     newTop = startTop + diffY;
                 }
 
-                if (newWidth > minWidth) {
+                if (newWidth > this.minWidth) {
                     this.windowDiv.style.width = newWidth + 'px';
                     this.windowDiv.style.left = newLeft + 'px';
                 }
-                if (newHeight > minHeight) {
+                if (newHeight > this.minHeight) {
                     this.windowDiv.style.height = newHeight + 'px';
                     this.windowDiv.style.top = newTop + 'px';
                 }
