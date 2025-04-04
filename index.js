@@ -100,7 +100,7 @@ window.onload = async () => {
         }
     });
 
-    function reglaDeTres(valor) {
+    function scaling(valor) {
         if (valor <= -80) {   
             let min = -5000, max = -60;
             let minY = 1, maxY = 999;
@@ -152,7 +152,7 @@ window.onload = async () => {
         
                     if (rect.top <= 60) {
                         const top = rect.top - 60;
-                        img.querySelector('img').style.transform = `translateY(${-(top*0.9)}px) scale(0.${reglaDeTres(rect.top)})`; 
+                        img.querySelector('img').style.transform = `translateY(${-(top*0.9)}px) scale(0.${scaling(rect.top)})`; 
                         img.style.zIndex = -1;
                     } else {
                         img.querySelector('img').style.transform = "";

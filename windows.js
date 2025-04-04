@@ -22,6 +22,7 @@ class CustomWindow extends HTMLElement {
         if (this.hasAttribute('no-resize')) {
             this.windowDiv.classList.add('no-resize');
         }
+        this.onClassChange();
     }
 
     render() {
