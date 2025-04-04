@@ -129,10 +129,7 @@ window.onload = async () => {
             el.classList.add('selected');
 
             if (el.classList.contains('expanded')) {
-                document.querySelector('container').scrollTo({
-                    left: document.querySelector('container .photos').offsetLeft-100,
-                    behavior: 'smooth'
-                });
+                moveAnimationWindows(document.querySelector('container .photos'));
             }
         } else {
             const newElement = document.createElement('custom-window');
@@ -215,10 +212,7 @@ window.onload = async () => {
             el.classList.add('selected');
 
             if (el.classList.contains('expanded')) {
-                document.querySelector('container').scrollTo({
-                    left: document.querySelector('container .about').offsetLeft-100,
-                    behavior: 'smooth'
-                });
+                moveAnimationWindows(document.querySelector('container .about'));
             }
         } else {
             const newElement = document.createElement('custom-window');
@@ -294,12 +288,8 @@ window.onload = async () => {
 
         if (el) {
             el.classList.add('selected');
-
             if (el.classList.contains('expanded')) {
-                document.querySelector('container').scrollTo({
-                    left: document.querySelector('container .contact').offsetLeft-100,
-                    behavior: 'smooth'
-                });
+                moveAnimationWindows(document.querySelector('container .contact'));
             }
         } else {
             const newElement = document.createElement('custom-window');
@@ -367,11 +357,20 @@ window.onload = async () => {
         });
     }
 
+    function moveAnimationWindows(el) {
+        const leftGap = screen.orientation.type === "landscape-primary" ? 100 : 0;
+        document.querySelector('container').scrollTo({
+            left: el.offsetLeft-leftGap,
+            behavior: 'smooth'
+        });
+    }
+
     window.addEventListener("resize", () => {
         const windowSelected = document.querySelector('custom-window.expanded.selected');
+        const leftGap = screen.orientation.type === "landscape-primary" ? 100 : 0;
         if (windowSelected) {
             document.querySelector('container').scrollTo({
-                left: windowSelected.offsetLeft-100,
+                left: windowSelected.offsetLeft-leftGap,
             });
         }
     })

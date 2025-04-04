@@ -450,3 +450,38 @@ custom-window .contact a{
     text-decoration: none;
     color: var(--withe-contrast);    
 }
+
+@media (orientation: portrait) {
+    
+    .leftBar {
+        width: 100%;
+        position: fixed;
+        height: 60px;
+        bottom: 0;
+        justify-content: space-around;
+        border-top: 0.5px solid var(--withe-contrast);
+    }
+
+    container {
+        width: 100% !important;
+    }
+
+    .topBar {
+        border-bottom: 0.5px solid var(--withe-contrast);
+    }
+    
+    .topBar .buttons,
+    .topBar::after,
+    .leftBar::before,
+    .leftBar::after {
+        display: none;
+    }
+
+    .leftBar .icon {
+        width: 60px;
+        padding: 0;
+        margin: 0;
+    }
+    
+    
+}

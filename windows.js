@@ -134,6 +134,15 @@ class CustomWindow extends HTMLElement {
                 .actions:hover svg {
                     display: block;
                 }
+
+                @media (orientation: portrait) {
+                        
+                    .window.expanded {
+                        width: 100vw !important;
+                        max-width: 100vw !important;
+                    }
+
+                }
             </style>
 
             <div class="window">
@@ -298,11 +307,12 @@ class CustomWindow extends HTMLElement {
                 if (progress < 1) {
                     requestAnimationFrame(animateExpand);
                 } else {
+                    const leftGap = screen.orientation.type === "landscape-primary" ? 100 : 0;
                     this.isExpanded = true;
                     this.windowDiv.classList.add('expanded');
                     this.classList.add('expanded');
                     document.querySelector('container').scrollTo({
-                        left: this.offsetLeft-100,
+                        left: this.offsetLeft-leftGap,
                     });
                     document.querySelector('.actions').classList.remove('hidden');
                 }
