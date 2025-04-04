@@ -151,16 +151,23 @@ window.onload = async () => {
                 imgElement.classList.add('photo');
                 imgElement.innerHTML = `<img src="./imgs/${img}_720.jpg" alt="${img}" draggable="false">`;
                 newElement.querySelector('.photos').appendChild(imgElement);
-                imgElement.querySelector('img').addEventListener('click', () => {
+                imgElement.querySelector('img').addEventListener('click', (e) => {
                     const resolution = window.innerHeight * window.devicePixelRatio < 1200 ? '1080' : '5k';
                     const imgFull = document.createElement('img');
                     imgFull.src = `./imgs/${img}_${resolution}.jpg`;
+                    e.target.parentElement.style.animation = 'expandToFull 250ms forwards';
+                    const animationTimeStart = performance.now();
                     imgFull.classList.add('fullscreen');
                     imgFull.setAttribute('draggable', 'false');
-                    imgFull.addEventListener('click', () => {
-                        imgFull.remove();
+                    imgFull.addEventListener('load', () => {
+                        setTimeout(() => {
+                            imgFull.addEventListener('click', () => {
+                                imgFull.remove();
+                            });
+                            document.body.appendChild(imgFull);
+                            e.target.parentElement.style.animation = '';
+                        }, animationTimeStart - performance.now() + 100);
                     });
-                    document.body.appendChild(imgFull);
                 });
             });
 
@@ -230,7 +237,7 @@ window.onload = async () => {
                 </div>
             </div>`;
     
-            newElement.setAttribute('min-width', '185');
+            newElement.setAttribute('min-width', '210');
             newElement.setAttribute('min-height', '130');
             newElement.title = lang.aboutTitle;
             newElement.classList.add('selected');
@@ -318,13 +325,23 @@ window.onload = async () => {
             document.querySelector('container').appendChild(newElement);
             newElement.center();
 
-            document.querySelector('.contact .copyEmail').addEventListener('click', () => {
+            const emailCopy = newElement.querySelector('.copyEmail');
+            emailCopy.addEventListener('click', (e) => {
                 const email = document.querySelector('.contact .emailLink').textContent;
                 navigator.clipboard.writeText(email).then(() => {
-                    document.querySelector('.contact .emailLink').classList.add('copied');
+                    
+                    const copied = document.createElement('div')
+                    copied.innerHTML = `<div class="copied">${lang.emailCopied}</div>`;
+                    document.body.appendChild(copied);
+                    const rect = e.target.getBoundingClientRect();
+                    copied.style.position = 'absolute';
+                    copied.style.left = `${rect.left + emailCopy.clientWidth/2 - copied.clientWidth/2}px`;
+                    copied.style.top = `${rect.top - 35}px`;
+                    copied.style.zIndex = 9999;
+                    
                     setTimeout(() => {
-                        document.querySelector('.contact .emailLink').classList.remove('copied');
-                    }, 1500);
+                        copied.remove();
+                    }, 1000);
                 }).catch(err => {
                     console.error('Error copying email: ', err);
                 });

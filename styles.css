@@ -230,6 +230,11 @@ custom-window .photo{
     box-shadow: 0 0px 10px 0px #00000050;
 }
 
+custom-window .photo:hover img {
+    transition: filter 200ms ease-in-out;
+    filter: brightness(1.08);
+}
+
 container .photos img{
     width: 100%;
     border-radius: 7px;
@@ -240,7 +245,30 @@ container .photos img{
     -webkit-user-select: none;
 }
 
+@keyframes expandToFull {
+    0% {
+        z-index:10;
+        transform: scale(1); 
+        opacity: 1;
+    }
+    100% {
+        z-index:10;
+        transform: scale(5);
+        opacity: 0.1;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 img.fullscreen {
+    animation: fadeIn 200ms ease-in-out forwards;
     user-select: none;
     -webkit-user-select: none;
     position: fixed;
@@ -397,19 +425,15 @@ custom-window .contact {
     min-width: 355px;
 }
 
-custom-window .contact .emailLink.copied::after {
-    content: "Copied!";
-    position: fixed;
-    top: 0.5rem;
-    right: 5px;
-    z-index: 10;
+.copied {
     background-color: #4caf50;
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0.25rem;
+    padding: 0.25rem 0.75rem;
     border-radius: 5px;
+    animation: fadeIn 250ms ease-in-out forwards;
 }
 
 custom-window .contact span {

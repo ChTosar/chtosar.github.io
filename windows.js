@@ -329,7 +329,7 @@ class CustomWindow extends HTMLElement {
     center(options = {}) {
         const { top = 50, left = 50 } = options;
         this.windowDiv.style.top = `calc(${top}% + 25px - ${this.windowDiv.offsetHeight/2}px)`;
-        this.windowDiv.style.left = `calc(${left}% + 100px - ${this.windowDiv.offsetWidth/2}px)`;
+        this.windowDiv.style.left = `calc(${left}% - ${this.windowDiv.offsetWidth/2}px)`;
     }
 
     resize() {
