@@ -138,22 +138,47 @@ window.onload = async () => {
             const newElement = document.createElement('custom-window');
 
             newElement.innerHTML = `<div class="photos">`;
-    
-            document.querySelector('container').appendChild(newElement);
-    
+        
             newElement.title = lang.photosTitle;
             newElement.classList.add('selected');
             newElement.classList.add('photos');
+            newElement.setAttribute('width', '60%');
+            newElement.setAttribute('height', '90%');
 
-            document.querySelector('container custom-window .photos').addEventListener("scroll", () => {        
+            const imgs = ['sn06', 'sn10', 'sn03', 'sn04', 'sn05', 'sn01', 'sn07', 'sn02', 'sn09', 'sn08', 'sn11', 'sn12', 'sn13'];
+            imgs.forEach(img => {
+                const imgElement = document.createElement('div');
+                imgElement.classList.add('photo');
+                imgElement.innerHTML = `<img src="./imgs/${img}_720.jpg" alt="${img}" draggable="false">`;
+                newElement.querySelector('.photos').appendChild(imgElement);
+                imgElement.querySelector('img').addEventListener('click', () => {
+                    const resolution = window.innerHeight * window.devicePixelRatio < 1200 ? '1080' : '5k';
+                    const imgFull = document.createElement('img');
+                    imgFull.src = `./imgs/${img}_${resolution}.jpg`;
+                    imgFull.classList.add('fullscreen');
+                    imgFull.setAttribute('draggable', 'false');
+                    imgFull.addEventListener('click', () => {
+                        imgFull.remove();
+                    });
+                    document.body.appendChild(imgFull);
+                });
+            });
+
+            document.querySelector('container').appendChild(newElement);
+            newElement.center();
+
+            const parent = document.querySelector('container custom-window .photos');
+            parent.addEventListener("scroll", () => {        
                 document.querySelectorAll(".photo").forEach(img => {
-        
+                    const rectParent = parent.getBoundingClientRect();       
                     const rect = img.getBoundingClientRect();
+                    const paddingTop = parseInt(window.getComputedStyle(parent).paddingTop.replace('px', ''));
+                    const relativeTop = rect.top - rectParent.top;
         
-                    if (rect.top <= 60) {
-                        const top = rect.top - 60;
-                        img.querySelector('img').style.transform = `translateY(${-(top*0.9)}px) scale(0.${scaling(rect.top)})`; 
-                        img.style.zIndex = -1;
+                    if (relativeTop < paddingTop) {
+                        const top = relativeTop - paddingTop;
+                        img.querySelector('img').style.transform = `translateY(${-(top*0.9)}px) scale(0.${scaling(relativeTop)})`; 
+                        img.style.zIndex = 1;
                     } else {
                         img.querySelector('img').style.transform = "";
                         img.style.zIndex = "";
@@ -161,6 +186,17 @@ window.onload = async () => {
                 });
         
             });
+
+            const resizeObserver = new ResizeObserver(entries => {
+                for (let entry of entries) {
+                    if (entry.contentRect.width < 800) {
+                        parent.classList.add('smallSize');
+                    } else {
+                        parent.classList.remove('smallSize');
+                    }
+                }
+            });
+            resizeObserver.observe(parent);
 
         }
     });
@@ -313,4 +349,13 @@ window.onload = async () => {
             type();
         });
     }
+
+    window.addEventListener("resize", () => {
+        const windowSelected = document.querySelector('custom-window.expanded.selected');
+        if (windowSelected) {
+            document.querySelector('container').scrollTo({
+                left: windowSelected.offsetLeft-100,
+            });
+        }
+    })
 }

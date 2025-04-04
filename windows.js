@@ -12,6 +12,8 @@ class CustomWindow extends HTMLElement {
     connectedCallback() {
         this.minWidth = this.getAttribute('min-width') || 100;
         this.minHeight = this.getAttribute('min-height') || 60;
+        this.windowWidth = this.getAttribute('width') || 'auto';
+        this.windowHeight = this.getAttribute('height') || 'auto';
         this.render();
         this.addEventListeners();
 
@@ -30,18 +32,20 @@ class CustomWindow extends HTMLElement {
             <style>
                 .window {
                     border-radius: 8px;
-                    backdrop-filter: blur(4px);
                     position: fixed;
+                    width: ${this.windowWidth};
+                    height: ${this.windowHeight};
                     min-width: ${this.minWidth}px;
                     min-height: ${this.minHeight}px;
                     top: 60px;
                     left: 120px;
-                    background: #0000008a;
                     border: 0.5px solid var(--withe-contrast);
                     box-shadow: -1px 10px 20px #00000080;
                     max-height: 100vh;
+                    max-width: calc(100vw - 100px);
                     user-select: none;
                     -webkit-user-select: none;
+                    overflow: hidden;
                 }
 
                 .window.no-resize {
@@ -68,6 +72,11 @@ class CustomWindow extends HTMLElement {
                     box-sizing: border-box;
                     display: flex;
                     justify-content: space-between;
+                    z-index: 3;
+                    position: absolute;
+                    width: 100%;
+                    backdrop-filter: blur(4px);
+                    background: #0000008a;
                 }
 
                 .window.expanded .bar {
@@ -76,12 +85,19 @@ class CustomWindow extends HTMLElement {
 
                 .window .content {
                     overflow: auto;
-                    height: calc(100% - 30px);
+                    min-height: ${this.minHeight}px;
+                    height: 100%;
                     width: 100%;
                     padding: 5px 12px;
                     box-sizing: border-box;
                     user-select: text;
                     -webkit-user-select: text;
+                    backdrop-filter: blur(4px);
+                    background: #0000008a;
+                }
+
+                slot>* {
+                    padding-top:30px;
                 }
 
                 .window.expanded .content {
@@ -198,6 +214,11 @@ class CustomWindow extends HTMLElement {
             this.shadowRoot.querySelector('.actions .big').addEventListener("click", () => {
                 this.toggleExpand();
             });
+
+            this.shadowRoot.querySelector('.bar').addEventListener("dblclick", () => {
+                console.log('double click');
+                this.toggleExpand();
+            });
         }
 
         this.observeClassChanges();
@@ -307,8 +328,8 @@ class CustomWindow extends HTMLElement {
 
     center(options = {}) {
         const { top = 50, left = 50 } = options;
-        this.windowDiv.style.top = `calc(${top}% - ${this.windowDiv.offsetHeight/2}px)`;
-        this.windowDiv.style.left = `calc(${left}% - ${this.windowDiv.offsetWidth/2}px)`;
+        this.windowDiv.style.top = `calc(${top}% + 25px - ${this.windowDiv.offsetHeight/2}px)`;
+        this.windowDiv.style.left = `calc(${left}% + 100px - ${this.windowDiv.offsetWidth/2}px)`;
     }
 
     resize() {
