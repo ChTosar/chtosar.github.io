@@ -5,7 +5,8 @@ let actualLang;
 const availableLanguages = ["en-US", "es-ES", "gl-ES", "ca-ES", "pt-PT", "fr-FR", "de-DE", "it-IT", "zh-CN", "ja-JP", "ar", "ru-RU", "vi-VN", "uk-UA"];
 
 async function loadLanguage(language) {
-    const userLang = (language || navigator.language || "en-US");
+    const userPrefLang = localStorage.getItem('preferredLanguage');
+    const userLang = userPrefLang ? userPrefLang : (language || navigator.language || "en-US");
     const baseLang = userLang.split("-")[0];
 
     if (availableLanguages.includes(userLang)) {
@@ -88,10 +89,14 @@ window.onload = async () => {
                     await loadLanguage(langCode);
                     actualLang = langCode;
                     newLangMenu.remove();
+                    localStorage.setItem('preferredLanguage', langCode);
                 });
                 newLangMenu.appendChild(langItem);
             });
             document.querySelector('.topBar .lang').appendChild(newLangMenu);
+            newLangMenu.addEventListener('mouseleave', () => {
+                newLangMenu.remove();
+            });
         }
     });
 
