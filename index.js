@@ -164,11 +164,13 @@ window.onload = async () => {
 
                     imgPrev.addEventListener('load', () => {
                         setTimeout(() => {
-                            imgPrev.addEventListener('click', () => {
-                                imgPrev.remove();
-                            });
-                            document.body.appendChild(imgPrev);
-                            e.target.parentElement.style.animation = '';
+                            if (!imgFull.complete) {
+                                imgPrev.addEventListener('click', () => {
+                                    imgPrev.remove();
+                                });
+                                document.body.appendChild(imgPrev);
+                                e.target.parentElement.style.animation = '';
+                            }
                         }, animationTimeStart - performance.now() + 200);
                     });
 
