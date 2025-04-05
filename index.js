@@ -149,21 +149,39 @@ window.onload = async () => {
                 imgElement.innerHTML = `<img src="./imgs/${img}_720.jpg" alt="${img}" draggable="false">`;
                 newElement.querySelector('.photos').appendChild(imgElement);
                 imgElement.querySelector('img').addEventListener('click', (e) => {
+                    const animationTimeStart = performance.now();
+                    e.target.parentElement.style.animation = 'expandToFull 250ms forwards';
+
                     const resolution = window.innerHeight * window.devicePixelRatio < 1200 ? '1080' : '5k';
                     const imgFull = document.createElement('img');
                     imgFull.src = `./imgs/${img}_${resolution}.jpg`;
-                    e.target.parentElement.style.animation = 'expandToFull 250ms forwards';
-                    const animationTimeStart = performance.now();
+
+                    const imgPrev = document.createElement('img');
+                    imgPrev.src = e.target.src;
+                    imgPrev.classList.add('fullscreen');
+                    imgPrev.classList.add('prev');
+                    imgPrev.setAttribute('draggable', 'false');
+
+                    imgPrev.addEventListener('load', () => {
+                        setTimeout(() => {
+                            imgPrev.addEventListener('click', () => {
+                                imgPrev.remove();
+                            });
+                            document.body.appendChild(imgPrev);
+                            e.target.parentElement.style.animation = '';
+                        }, animationTimeStart - performance.now() + 200);
+                    });
+
                     imgFull.classList.add('fullscreen');
-                    imgFull.setAttribute('draggable', 'false');
+                    imgFull.setAttribute('draggable', 'false');                              
                     imgFull.addEventListener('load', () => {
                         setTimeout(() => {
                             imgFull.addEventListener('click', () => {
                                 imgFull.remove();
                             });
+                            imgPrev.remove();
                             document.body.appendChild(imgFull);
-                            e.target.parentElement.style.animation = '';
-                        }, animationTimeStart - performance.now() + 100);
+                        }, animationTimeStart - performance.now() + 200);
                     });
                 });
             });
