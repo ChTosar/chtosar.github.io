@@ -19,6 +19,8 @@ class CustomWindow extends HTMLElement {
 
         if (this.hasAttribute('no-expand')) {
             this.shadowRoot.querySelector('.actions .big').style.display = 'none';
+        } else if (screen.orientation.type === "portrait-primary") {
+            this.toggleExpand();
         }
 
         if (this.hasAttribute('no-resize')) {
@@ -39,7 +41,7 @@ class CustomWindow extends HTMLElement {
                     min-height: ${this.minHeight}px;
                     top: 60px;
                     left: 120px;
-                    border: 0.5px solid var(--withe-contrast);
+                    border: 2px solid var(--withe-contrast);
                     box-shadow: -1px 10px 20px #00000080;
                     max-height: 100vh;
                     max-width: calc(100vw - 100px);
@@ -67,7 +69,7 @@ class CustomWindow extends HTMLElement {
 
                 .window .bar {
                     min-width: 60px;
-                    border-bottom: solid 1px var(--withe-contrast);
+                    border-bottom: solid 2px var(--withe-contrast);
                     padding: 5px 12px;
                     box-sizing: border-box;
                     display: flex;
