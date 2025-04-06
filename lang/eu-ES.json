@@ -8,5 +8,10 @@
     "contactTitle": "Kontaktua",
     "contactEmailText": "Bidali mezu bat hona:",
     "linkedinText": "edo bisitatu nire Linkedin",
-    "emailCopied": "Posta kopiatua!"
+    "emailCopied": "Posta kopiatua!",
+    "pdfReader": "PDF irakurlea",
+    "chat": "AI Txata",
+    "chatPresentation": "Kaixo, Christian Tosarrek sortutako laguntzaile birtuala naiz.\nPrest nago zure galderei erantzuteko eta behar duzun guztian laguntzeko!",
+    "chatInput": "Idatzi hemen zure galdera...",
+    "chatResponse": "Haha, engainatu zaitut! Egia esan, ez nuen dirurik gastatu nahi hau API batera edo antzeko zerbaitetara lotzeko, baina nire inguruan zerbait jakin nahi baduzu, galdetu lasai! Erabili kontaktu ikonoa edo esteka hau:"
 }

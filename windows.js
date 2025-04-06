@@ -7,6 +7,7 @@ class CustomWindow extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this.isExpanded = false;
         this.initialState = {};
+        this.onClose = () => {};
     }
 
     connectedCallback() {
@@ -90,7 +91,7 @@ class CustomWindow extends HTMLElement {
                     min-height: ${this.minHeight}px;
                     height: 100%;
                     width: 100%;
-                    padding: 5px 12px;
+                    padding: 0;
                     box-sizing: border-box;
                     user-select: text;
                     -webkit-user-select: text;
@@ -277,6 +278,7 @@ class CustomWindow extends HTMLElement {
             this.classList.remove('expanded');
             document.querySelector('.topBar .actions').classList.add('hidden');
         }
+        this.onClose();
         window.defaultTitle();
         this.remove();
     }

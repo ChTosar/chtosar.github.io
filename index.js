@@ -132,22 +132,22 @@ window.onload = async () => {
                 moveAnimationWindows(document.querySelector('container .photos'));
             }
         } else {
-            const newElement = document.createElement('custom-window');
+            const win = document.createElement('custom-window');
 
-            newElement.innerHTML = `<div class="photos">`;
+            win.innerHTML = `<div class="photos">`;
         
-            newElement.title = lang.photosTitle;
-            newElement.classList.add('selected');
-            newElement.classList.add('photos');
-            newElement.setAttribute('width', '60%');
-            newElement.setAttribute('height', '90%');
+            win.title = lang.photosTitle;
+            win.classList.add('selected');
+            win.classList.add('photos');
+            win.setAttribute('width', '60%');
+            win.setAttribute('height', '90%');
 
             const imgs = ['sn06', 'sn10', 'sn03', 'sn04', 'sn05', 'sn01', 'sn07', 'sn02', 'sn09', 'sn08', 'sn11', 'sn12', 'sn13'];
             imgs.forEach(img => {
                 const imgElement = document.createElement('div');
                 imgElement.classList.add('photo');
                 imgElement.innerHTML = `<img src="./imgs/${img}_720.jpg" alt="${img}" draggable="false">`;
-                newElement.querySelector('.photos').appendChild(imgElement);
+                win.querySelector('.photos').appendChild(imgElement);
                 imgElement.querySelector('img').addEventListener('click', (e) => {
                     const animationTimeStart = performance.now();
                     e.target.parentElement.style.animation = 'expandToFull 250ms forwards';
@@ -188,8 +188,8 @@ window.onload = async () => {
                 });
             });
 
-            document.querySelector('container').appendChild(newElement);
-            newElement.center();
+            document.querySelector('container').appendChild(win);
+            win.center();
 
             const parent = document.querySelector('container custom-window .photos');
             parent.addEventListener("scroll", () => {        
@@ -235,9 +235,9 @@ window.onload = async () => {
                 moveAnimationWindows(document.querySelector('container .about'));
             }
         } else {
-            const newElement = document.createElement('custom-window');
+            const win = document.createElement('custom-window');
 
-            newElement.innerHTML = `<div class="linkList" tabindex="0">
+            win.innerHTML = `<div class="linkList" tabindex="0">
             <spam class="text"></spam>
                 <div class="links">
                     <a href="https://github.com/ChTosar/" target="_blank">
@@ -251,13 +251,13 @@ window.onload = async () => {
                 </div>
             </div>`;
     
-            newElement.setAttribute('min-width', '210');
-            newElement.setAttribute('min-height', '130');
-            newElement.title = lang.aboutTitle;
-            newElement.classList.add('selected');
-            newElement.classList.add('about');
-            document.querySelector('container').appendChild(newElement);
-            newElement.center({top: 25});
+            win.setAttribute('min-width', '210');
+            win.setAttribute('min-height', '130');
+            win.title = lang.aboutTitle;
+            win.classList.add('selected');
+            win.classList.add('about');
+            document.querySelector('container').appendChild(win);
+            win.center({top: 25});
 
             typeWriterEffect(document.querySelector('.linkList .text'), lang.aboutText).then(() => {
                 document.querySelector('.linkList .links').style.display = 'block';
@@ -312,9 +312,9 @@ window.onload = async () => {
                 moveAnimationWindows(document.querySelector('container .contact'));
             }
         } else {
-            const newElement = document.createElement('custom-window');
+            const win = document.createElement('custom-window');
 
-            newElement.innerHTML = `<div class="contact">
+            win.innerHTML = `<div class="contact">
             <span>${lang.contactEmailText} <a class="emailLink" href="mailto:christian@tosar.eu">christian@tosar.eu</a>
             <svg class="copyEmail" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="18px" height="18" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
                 <path d="M29.5,7h-19A1.5,1.5,0,0,0,9,8.5v24A1.5,1.5,0,0,0,10.5,34h19A1.5,1.5,0,0,0,31,32.5V8.5A1.5,1.5,0,0,0,29.5,7ZM29,32H11V9H29Z" class="clr-i-outline clr-i-outline-path-1"/><path d="M26,3.5A1.5,1.5,0,0,0,24.5,2H5.5A1.5,1.5,0,0,0,4,3.5v24A1.5,1.5,0,0,0,5.5,29H6V4H26Z" class="clr-i-outline clr-i-outline-path-2"/>
@@ -327,15 +327,15 @@ window.onload = async () => {
             </span>
             </div>`;
 
-            newElement.setAttribute('no-resize', '');
-            newElement.setAttribute('no-expand', '');
-            newElement.title = lang.contactTitle;
-            newElement.classList.add('selected');
-            newElement.classList.add('contact');
-            document.querySelector('container').appendChild(newElement);
-            newElement.center();
+            win.setAttribute('no-resize', '');
+            win.setAttribute('no-expand', '');
+            win.title = lang.contactTitle;
+            win.classList.add('selected');
+            win.classList.add('contact');
+            document.querySelector('container').appendChild(win);
+            win.center();
 
-            const emailCopy = newElement.querySelector('.copyEmail');
+            const emailCopy = win.querySelector('.copyEmail');
             emailCopy.addEventListener('click', (e) => {
                 const email = document.querySelector('.contact .emailLink').textContent;
                 navigator.clipboard.writeText(email).then(() => {
@@ -394,4 +394,93 @@ window.onload = async () => {
             });
         }
     })
+
+    const cv = document.querySelector('.des.icon.mycv');
+    cv.addEventListener('dblclick', () => {
+        const win = document.createElement('custom-window');
+
+        win.innerHTML = `<iframe src="./docs/CVCH.pdf" frameborder="0" width="100%" height="100%"></iframe>`;
+        
+        win.title = lang.pdfReader;
+        win.setAttribute('width', '840px');
+        win.setAttribute('height', '90%');
+        cv.classList.remove('selected');
+
+        document.querySelector('container').appendChild(win);
+        win.center();
+        win.classList.add('selected');
+        document.querySelector('.leftBar .icon.cv').classList.remove('hidden');
+
+        win.onClose = () => {
+            document.querySelector('.leftBar .icon.cv').classList.add('hidden');
+        }
+    });
+
+    cv.addEventListener('click', (e) => {
+        e.stopPropagation();
+        cv.classList.add('selected');
+    });
+
+    document.querySelector('.main').addEventListener('click', () => {
+        document.querySelectorAll('.des.icon').forEach(icon => {
+            icon.classList.remove('selected');
+        });
+    });
+
+    document.querySelector('.leftBar .icon.chat').addEventListener('click', () => {
+        const el = document.querySelector('container custom-window.chat');
+
+        if (el) {
+            el.classList.add('selected');
+            if (el.classList.contains('expanded')) {
+                moveAnimationWindows(document.querySelector('container .chat'));
+            }
+        } else {
+            const win = document.createElement('custom-window');
+
+            const presentation = lang.chatPresentation;
+
+            win.innerHTML = `<div class="chat">
+            <pre class="presentation"></pre>
+            <spam class="userInput" style="display:none;">>>><input type="text" placeholder="${lang.chatInput}"/></spam>
+            </div>`;
+
+            win.title = lang.chat;
+            win.classList.add('selected');
+            win.classList.add('chat');
+            win.setAttribute('width', '480px');
+            win.setAttribute('height', '30%');
+            document.querySelector('container').appendChild(win);
+
+            const input = win.querySelector('.chat input');
+
+            typeWriterEffect(document.querySelector('.chat .presentation'), presentation, 12).then(() => {
+                document.querySelector('.chat .userInput').style.display = '';
+                input.focus();
+            });
+
+            input.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    const input = event.target;
+                    const message = input.value.trim();
+                    if (message) {
+                        input.setAttribute('readonly', 'readonly');
+                        const response = document.createElement('pre');
+                        response.classList.add('response');
+
+                        document.querySelector('custom-window .chat').appendChild(response);
+
+                        typeWriterEffect(response, lang.chatResponse, 12).then(() => {
+                            response.innerHTML += `</br><a> ✉️ ${lang.contactTitle}</a>`;    
+                            response.querySelector('a').addEventListener('click', () => {
+                                document.querySelector('.leftBar .icon.contact').click();
+                            });                  
+                        });
+                    }
+                }
+            });
+
+            win.center();
+        }
+    });
 }

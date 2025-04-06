@@ -138,10 +138,11 @@ custom-window.selected {
     margin: 0 1rem;
     display: block;
     width: 100%;
+    height: 74px;
     border-radius: 100px;
     position: relative;
     background-color: rgb(255 255 255 / 0%);
-    transition: all 300ms ease-in;
+    transition: all 400ms ease-in;
 }
 
 .leftBar .icon:after {
@@ -188,9 +189,62 @@ container>div{
 }
 
 container .main {
-    padding: 5%;
+    padding: 50px 20px;
     box-sizing: border-box;
     overflow: scroll;
+    display: flex;
+    flex-direction: row-reverse;
+    position: relative;
+}
+
+.main .des.icon {
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.main .des.icon.selected {
+    border: 2px dotted var(--withe-contrast);
+}
+
+custom-window .chat {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0.2rem;
+    padding-top: calc(26px + 0.2rem);  
+}
+
+custom-window .chat .presentation,
+custom-window .chat pre {
+    width: 100%;
+    margin: 0;
+    margin-bottom: 1rem;
+    white-space: pre-line;
+}
+
+custom-window .chat .userInput {
+    color: var(--withe-contrast);
+    width: 100%;
+    display: flex;
+}
+
+custom-window .chat input {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    color: white;
+    flex-grow: 1;
+}
+
+custom-window .chat .response a{
+    background-color: #2196F3;
+    cursor: pointer;
+}
+
+.icon.hidden {
+    height: 0;
+    opacity: 0;
 }
 
 container span {
@@ -423,7 +477,7 @@ container .about span {
     100% {left: 0;}
 }
 custom-window>* {
-    padding-top: 30px;
+    padding-top: 26px;
 }
 custom-window.expanded .contact {
     padding-top: 2rem;
