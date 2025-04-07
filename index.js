@@ -14,6 +14,7 @@ async function loadLanguage(language) {
             const response = await fetch(`./lang/${userLang}.json`);
             Object.assign(lang, await response.json());
             actualLang = userLang;
+            document.querySelector('html').setAttribute('lang', actualLang.split("-")[0]);
             return;
         } catch (error) {
             console.error(`Error loading language file for ${userLang}:`, error);
@@ -26,6 +27,7 @@ async function loadLanguage(language) {
             const response = await fetch(`./lang/${partialMatch}.json`);
             Object.assign(lang, await response.json());
             actualLang = userLang;
+            document.querySelector('html').setAttribute('lang', actualLang.split("-")[0]);
             return;
         } catch (error) {
             console.error(`Error loading language file for ${partialMatch}:`, error);
@@ -35,6 +37,7 @@ async function loadLanguage(language) {
     console.warn(`Falling back to default language.`);
     const response = await fetch('./lang/en-us.json');
     Object.assign(lang, await response.json());
+    document.querySelector('html').setAttribute('lang', 'en');
 }
 
 window.onload = async () => {
@@ -559,4 +562,42 @@ window.onload = async () => {
     });
 
     windowsObserver.observe(document.querySelector('container'), { attributes: true, subtree: true });
+
+    (() => {
+        const paths = document.querySelectorAll('svg.bg path');
+        let tick = 0;
+    
+        function animateWaves() {
+            tick += 0.01;
+            paths.forEach((path, i) => {
+                const offset = i * 4.5;
+                const amplitude = i * 28 ;
+                const frequency = 0.001  + i * 0.0005;
+    
+                let d = `M0 0 `;
+                const startY = 500 + Math.sin(tick + offset) * amplitude;
+                d += `L0 ${startY.toFixed(2)} `;
+    
+                for (let x = 100; x <= 1800; x += 100) {
+                    const y = 500 + Math.sin((x * frequency) + tick + offset) * amplitude;
+                    d += `L${x} ${y.toFixed(2)} `;
+                }
+    
+                d += `L1800 0 Z`;
+    
+                path.setAttribute("d", d);
+            });
+    
+            requestAnimationFrame(animateWaves);
+        }
+    
+        const svg = document.querySelector('svg.bg');
+        svg.style.width = '100%';
+        svg.style.height = '100%';
+        svg.setAttribute('viewBox', `0 0 ${svg.clientWidth} ${svg.clientHeight}`);
+        window.addEventListener('resize', () => {
+            svg.setAttribute('viewBox', `0 0 ${svg.clientWidth} ${svg.clientHeight}`);
+        });
+        animateWaves();
+    })();
 }

@@ -93,12 +93,13 @@ custom-window.selected {
     height: 1px;
     border-bottom: 2px solid var(--withe-contrast);
     top: 25px;
-    animation: showTopBar 1s ease-in-out forwards;
+    animation: showTopBar 1s ease-in-out 1.2s forwards;
 }
 
 .leftBar {
     z-index: 10;
-    animation: showLeftBar 1s ease-in-out forwards;
+    transform: translateX(-100px);
+    animation: showLeftBar 1s ease-in-out 1.2s forwards;
     display: flex;
     height: calc(100vh - 25px);
     margin-top: 25px;
@@ -510,7 +511,10 @@ custom-window .contact {
     padding-top: calc(30px + 1rem) !important;
     min-width: 355px;
 }
-
+svg.bg {
+    position: absolute;
+    z-index: -10;
+}
 .copied {
     background-color: #4caf50;
     color: white;
