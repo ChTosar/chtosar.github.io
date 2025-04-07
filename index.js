@@ -374,6 +374,17 @@ window.onload = async () => {
         }
     });
 
+    document.querySelector('.leftBar .icon.cv').addEventListener('click', () => {
+        const el = document.querySelector('custom-window[name="cv"]');
+
+        if (el) {
+            el.classList.add('selected');
+            if (el.classList.contains('expanded')) {
+                moveAnimationWindows(document.querySelector('container .cv'));
+            }
+        }
+    });
+
     function typeWriterEffect(element, text, speed = 50) {
         let index = 0;
 
@@ -412,7 +423,11 @@ window.onload = async () => {
 
     const cv = document.querySelector('.des.icon.mycv');
     cv.addEventListener('dblclick', () => {
-        const icon = document.querySelector('.leftBar .icon.cv');
+        
+        if (document.querySelector('custom-window[name="cv"]')) {
+            document.querySelector('custom-window[name="cv"]').classList.add('selected');
+            return;
+        } const icon = document.querySelector('.leftBar .icon.cv');
         const win = document.createElement('custom-window');
 
         win.innerHTML = `<iframe src="./docs/CVCH${actualLang == 'es-ES'? '': '_ING'}.pdf" frameborder="0" width="100%" height="100%"></iframe>`;
@@ -424,8 +439,11 @@ window.onload = async () => {
         cv.classList.remove('selected');
 
         document.querySelector('container').appendChild(win);
-        win.center();  
-        icon.classList.remove('hidden');
+        win.center(); 
+        icon.style.display = 'block';
+        setTimeout(() => {
+            icon.classList.remove('hidden');
+        }, 100);
         icon.classList.add('selected');
 
         win.onClose = () => {
