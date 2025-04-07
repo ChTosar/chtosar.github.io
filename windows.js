@@ -27,6 +27,7 @@ class CustomWindow extends HTMLElement {
         if (this.hasAttribute('no-resize')) {
             this.windowDiv.classList.add('no-resize');
         }
+        this.classList.add('selected');
         this.onClassChange();
     }
 
@@ -105,7 +106,6 @@ class CustomWindow extends HTMLElement {
 
                 .window.expanded .content {
                     height: calc(100%);
-                    padding: 0 12px;
                 }
                 
                 .actions {

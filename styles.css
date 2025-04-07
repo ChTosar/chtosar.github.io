@@ -169,6 +169,18 @@ custom-window.selected {
     cursor: pointer;
 }
 
+.leftBar .icon.selected::before {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 1px;
+    border-radius: 100px;
+    position: absolute;
+    top: calc(50% - 5px);
+    left: -19px;
+    border: 5px solid #f44336;
+}
+
 container {
     box-sizing: border-box;
     overflow: hidden;
@@ -264,21 +276,28 @@ custom-window .photos{
     overflow: auto;
     height: 100%;
     width: 100%;
+    padding: 1rem;
+    padding-top: calc(26px + 1rem) !important;
     padding-bottom: 10rem;
 }
 
 custom-window  .photos.smallSize .photo{
-    width: calc(50% - 1rem);
+    width: calc(33% - 1rem);
 }
 
 @media screen and (max-width: 800px) {
     custom-window .photos .photo {
-        width: calc(50% - 1rem);
+        width: calc(33% - 1rem);
     }
 }
 
 .expanded .photos {
     padding-top: 3rem;
+}
+
+.expanded .chat {
+    padding-inline-start: 1rem;
+    padding-top: calc(26px + 1rem) !important;
 }
 
 custom-window .photo{
@@ -408,6 +427,7 @@ container .about span {
 .linkList {
     width: 100%;
     outline: none;
+    padding: 1rem;
 }
 
 .expanded .linkList {
@@ -477,14 +497,15 @@ container .about span {
     100% {left: 0;}
 }
 custom-window>* {
-    padding-top: 26px;
+    padding-top: 26px !important;
+    box-sizing: border-box;
 }
 custom-window.expanded .contact {
     padding-top: 2rem;
 }
 custom-window .contact {
     padding: 1rem;
-    padding-top: calc(30px + 1rem);
+    padding-top: calc(30px + 1rem) !important;
     min-width: 355px;
 }
 

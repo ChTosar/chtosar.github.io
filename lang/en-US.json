@@ -11,7 +11,7 @@
     "emailCopied": "Email copied!",
     "pdfReader": "PDF Reader",
     "chat": "AI Chat",
-    "chatPresentation": "Hi, I am a virtual assistant created by Christian Tosar.\nI am ready to answer your questions and help you with whatever you need!",
+    "chatPresentation": "Hi, I am a virtual assistant created by Christian.\nI am ready to answer your questions and help you with whatever you need!",
     "chatInput": "Type your question here...",
     "chatResponse": "Haha, you got tricked! Actually, I wasn't planning to spend money linking this to an API or something, but if you want to know something about me, feel free to ask! Use the contact icon or this link:"
 }

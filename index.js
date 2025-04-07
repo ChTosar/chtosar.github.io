@@ -6,7 +6,7 @@ const availableLanguages = ["en-US", "es-ES", "gl-ES", "ca-ES", "pt-PT", "fr-FR"
 
 async function loadLanguage(language) {
     const userPrefLang = localStorage.getItem('preferredLanguage');
-    const userLang = userPrefLang ? userPrefLang : (language || navigator.language || "en-US");
+    const userLang = !language && userPrefLang ? userPrefLang : (language || navigator.language || "en-US");
     const baseLang = userLang.split("-")[0];
 
     if (availableLanguages.includes(userLang)) {
@@ -123,7 +123,7 @@ window.onload = async () => {
 
     document.querySelector('.leftBar .icon.photos').addEventListener('click', () => {
 
-        const el = document.querySelector('container custom-window.photos');
+        const el = document.querySelector('custom-window[name="photos"]');
 
         if (el) {
             el.classList.add('selected');
@@ -133,12 +133,12 @@ window.onload = async () => {
             }
         } else {
             const win = document.createElement('custom-window');
+            const icon = document.querySelector('.leftBar .icon.photos');
 
             win.innerHTML = `<div class="photos">`;
         
             win.title = lang.photosTitle;
-            win.classList.add('selected');
-            win.classList.add('photos');
+            win.setAttribute('name', 'photos');
             win.setAttribute('width', '60%');
             win.setAttribute('height', '90%');
 
@@ -190,6 +190,10 @@ window.onload = async () => {
 
             document.querySelector('container').appendChild(win);
             win.center();
+            icon.classList.add('selected');
+            win.onClose = () => {
+                icon.classList.remove('selected');
+            };
 
             const parent = document.querySelector('container custom-window .photos');
             parent.addEventListener("scroll", () => {        
@@ -226,7 +230,7 @@ window.onload = async () => {
     });
 
     document.querySelector('.leftBar .icon.about').addEventListener('click', () => {
-        const el = document.querySelector('container custom-window.about');
+        const el = document.querySelector('custom-window[name="about"]');
 
         if (el) {
             el.classList.add('selected');
@@ -235,6 +239,7 @@ window.onload = async () => {
                 moveAnimationWindows(document.querySelector('container .about'));
             }
         } else {
+            const icon = document.querySelector('.leftBar .icon.about');
             const win = document.createElement('custom-window');
 
             win.innerHTML = `<div class="linkList" tabindex="0">
@@ -251,13 +256,17 @@ window.onload = async () => {
                 </div>
             </div>`;
     
-            win.setAttribute('min-width', '210');
+            win.setAttribute('min-width', '280');
             win.setAttribute('min-height', '130');
+            win.setAttribute('name', 'about');
             win.title = lang.aboutTitle;
-            win.classList.add('selected');
-            win.classList.add('about');
             document.querySelector('container').appendChild(win);
             win.center({top: 25});
+
+            icon.classList.add('selected');
+            win.onClose = () => {
+                icon.classList.remove('selected');
+            };
 
             typeWriterEffect(document.querySelector('.linkList .text'), lang.aboutText).then(() => {
                 document.querySelector('.linkList .links').style.display = 'block';
@@ -304,7 +313,7 @@ window.onload = async () => {
 
     document.querySelector('.leftBar .icon.contact').addEventListener('click', () => {
 
-        const el = document.querySelector('container custom-window.contact');
+        const el = document.querySelector('custom-window[name="contact"]');
 
         if (el) {
             el.classList.add('selected');
@@ -312,6 +321,7 @@ window.onload = async () => {
                 moveAnimationWindows(document.querySelector('container .contact'));
             }
         } else {
+            const icon = document.querySelector('.leftBar .icon.contact');
             const win = document.createElement('custom-window');
 
             win.innerHTML = `<div class="contact">
@@ -329,9 +339,8 @@ window.onload = async () => {
 
             win.setAttribute('no-resize', '');
             win.setAttribute('no-expand', '');
+            win.setAttribute('name', 'contact');
             win.title = lang.contactTitle;
-            win.classList.add('selected');
-            win.classList.add('contact');
             document.querySelector('container').appendChild(win);
             win.center();
 
@@ -356,6 +365,12 @@ window.onload = async () => {
                     console.error('Error copying email: ', err);
                 });
             });
+
+            icon.classList.add('selected');
+
+            win.onClose = () => {
+                icon.classList.remove('selected');
+            };
         }
     });
 
@@ -397,22 +412,25 @@ window.onload = async () => {
 
     const cv = document.querySelector('.des.icon.mycv');
     cv.addEventListener('dblclick', () => {
+        const icon = document.querySelector('.leftBar .icon.cv');
         const win = document.createElement('custom-window');
 
-        win.innerHTML = `<iframe src="./docs/CVCH.pdf" frameborder="0" width="100%" height="100%"></iframe>`;
+        win.innerHTML = `<iframe src="./docs/CVCH${actualLang == 'es-ES'? '': '_ING'}.pdf" frameborder="0" width="100%" height="100%"></iframe>`;
         
         win.title = lang.pdfReader;
         win.setAttribute('width', '840px');
         win.setAttribute('height', '90%');
+        win.setAttribute('name', 'cv');
         cv.classList.remove('selected');
 
         document.querySelector('container').appendChild(win);
-        win.center();
-        win.classList.add('selected');
-        document.querySelector('.leftBar .icon.cv').classList.remove('hidden');
+        win.center();  
+        icon.classList.remove('hidden');
+        icon.classList.add('selected');
 
         win.onClose = () => {
-            document.querySelector('.leftBar .icon.cv').classList.add('hidden');
+            icon.classList.add('hidden');
+            icon.classList.remove('selected');
         }
     });
 
@@ -428,7 +446,7 @@ window.onload = async () => {
     });
 
     document.querySelector('.leftBar .icon.chat').addEventListener('click', () => {
-        const el = document.querySelector('container custom-window.chat');
+        const el = document.querySelector('custom-window[name="chat"]');
 
         if (el) {
             el.classList.add('selected');
@@ -437,6 +455,7 @@ window.onload = async () => {
             }
         } else {
             const win = document.createElement('custom-window');
+            const icon = document.querySelector('.leftBar .icon.chat');
 
             const presentation = lang.chatPresentation;
 
@@ -447,7 +466,7 @@ window.onload = async () => {
 
             win.title = lang.chat;
             win.classList.add('selected');
-            win.classList.add('chat');
+            win.setAttribute('name', 'chat');
             win.setAttribute('width', '480px');
             win.setAttribute('height', '30%');
             document.querySelector('container').appendChild(win);
@@ -481,6 +500,31 @@ window.onload = async () => {
             });
 
             win.center();
+            icon.classList.add('selected');
+            win.onClose = () => {
+                icon.classList.remove('selected');
+            };
         }
     });
+
+    const windowsObserver = new MutationObserver((mutationsList) => {
+        mutationsList.forEach(mutation => {
+            if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                const target = mutation.target;
+                if (target.tagName === 'CUSTOM-WINDOW' && target.classList.contains('selected')) {
+                    const windowName = target.getAttribute('name');
+                    const icons = document.querySelectorAll('.leftBar .icon');
+                    icons.forEach(icon => {
+                        if (icon.classList.contains(windowName)) {
+                            icon.classList.add('selected');
+                        } else {
+                            icon.classList.remove('selected');
+                        }
+                    });
+                }
+            }
+        });
+    });
+
+    windowsObserver.observe(document.querySelector('container'), { attributes: true, subtree: true });
 }
