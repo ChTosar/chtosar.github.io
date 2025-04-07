@@ -537,6 +537,17 @@ custom-window .contact a{
     color: var(--withe-contrast);    
 }
 
+custom-window iframe {
+    pointer-events: none;
+}
+
+custom-window .pdfContent {
+    height: 100%;
+    width: 100%;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
 @media (orientation: portrait) {
     
     .leftBar {

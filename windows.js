@@ -88,7 +88,6 @@ class CustomWindow extends HTMLElement {
                 }
 
                 .window .content {
-                    overflow: auto;
                     min-height: ${this.minHeight}px;
                     height: 100%;
                     width: 100%;
@@ -435,6 +434,8 @@ class CustomWindow extends HTMLElement {
             document.removeEventListener('mousemove', resize);
             document.removeEventListener('mouseup', stopResize);
         }
+
+        this.stopResize = stopResize;
     }
 
 }

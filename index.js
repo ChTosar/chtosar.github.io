@@ -430,7 +430,7 @@ window.onload = async () => {
         } const icon = document.querySelector('.leftBar .icon.cv');
         const win = document.createElement('custom-window');
 
-        win.innerHTML = `<iframe src="./docs/CVCH${actualLang == 'es-ES'? '': '_ING'}.pdf" frameborder="0" width="100%" height="100%"></iframe>`;
+        win.innerHTML = `<div class="pdfContent"><iframe src="./docs/CVCH${actualLang == 'es-ES'? '': '_ING'}.pdf" frameborder="0" width="100%" height="100%"></iframe></div>`;
         
         win.title = lang.pdfReader;
         win.setAttribute('width', '840px');
@@ -450,6 +450,20 @@ window.onload = async () => {
             icon.classList.add('hidden');
             icon.classList.remove('selected');
         }
+
+        const iframe = win.querySelector('iframe');
+
+        const activeIframe = (e) => {
+            iframe.style.pointerEvents = 'auto';
+            iframe.click();
+            iframe.addEventListener('mouseleave', () => {
+                iframe.style.pointerEvents = 'none';
+                console.log('mouseleave');
+            });
+        }
+
+        win.querySelector('.pdfContent').addEventListener('wheel', activeIframe);
+        win.querySelector('.pdfContent').addEventListener('click', activeIframe);
     });
 
     cv.addEventListener('click', (e) => {
