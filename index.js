@@ -1,4 +1,5 @@
 import "./windows.js";
+import "./calendar.js";
 
 const lang = {};
 let actualLang;
@@ -43,19 +44,29 @@ async function loadLanguage(language) {
 window.onload = async () => {
     await loadLanguage();
 
+    const timePlace = document.querySelector('.topBar time');
+
     function updateTime() {
-        const elementoHora = document.querySelector('.topBar time');
-        if (!elementoHora) return;
+        if (!timePlace) return;
 
         const ahora = new Date();
         const hora = ahora.getHours().toString().padStart(2, '0');
         const minutos = ahora.getMinutes().toString().padStart(2, '0');
         const segundos = ahora.getSeconds().toString().padStart(2, '0');
 
-        elementoHora.textContent = `${hora}:${minutos}:${segundos}`;
+        timePlace.textContent = `${hora}:${minutos}:${segundos}`;
     }
     setInterval(updateTime, 1000);
     updateTime();
+
+    timePlace.addEventListener('click', () => {
+        const calendar = document.querySelector('my-calendar');
+        calendar.style.display = 'block';
+
+        calendar.addEventListener('mouseleave', () => { 
+            calendar.style.display = '';
+        });
+    });
 
     window.defaultTitle = () => {
         document.querySelector('.topBar .title').textContent = lang.defaultTitle;

@@ -272,7 +272,7 @@ custom-window .photos{
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    column-gap: 1rem;
+    column-gap: 0.5rem;
     justify-content: space-between;
     align-content: flex-start;
     box-sizing: border-box;
@@ -304,12 +304,26 @@ custom-window  .photos.smallSize .photo{
 }
 
 custom-window .photo{
-    width: calc(25% - 1rem);
+    width: calc(25% - 0.5rem);
     margin-bottom: 1rem;
     aspect-ratio: 3 / 4;
     z-index: 2;
     box-sizing: border-box;
     box-shadow: 0 0px 10px 0px #00000050;
+}
+
+time:hover {
+    cursor: pointer;
+}
+
+my-calendar {
+    position: absolute;
+    top: 35px;
+    right: 5px;
+    backdrop-filter: blur(4px);
+    background: rgb(28 28 28 / 50%);
+    display: none;
+    z-index: 100;
 }
 
 custom-window .photo:hover img {
