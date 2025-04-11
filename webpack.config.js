@@ -60,7 +60,7 @@ module.exports = {
                 { from: 'icon', to: 'icon' },
                 { from: 'imgs', to: 'imgs' },
                 { from: 'lang', to: 'lang' },
-                { form: 'CNAME', to: 'CNAME' }
+                { from: 'CNAME', to: '' }
             ]
         })
     ],
