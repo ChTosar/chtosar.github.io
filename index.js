@@ -1,5 +1,6 @@
 import "./windows.js";
 import "./calendar.js";
+import './styles.css';
 
 const lang = {};
 let actualLang;
