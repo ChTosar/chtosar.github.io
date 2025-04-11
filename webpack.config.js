@@ -59,7 +59,8 @@ module.exports = {
                 { from: 'docs', to: 'docs' }, 
                 { from: 'icon', to: 'icon' },
                 { from: 'imgs', to: 'imgs' },
-                { from: 'lang', to: 'lang' }
+                { from: 'lang', to: 'lang' },
+                { form: 'CNAME', to: 'CNAME' }
             ]
         })
     ],
