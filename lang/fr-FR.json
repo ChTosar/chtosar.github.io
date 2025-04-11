@@ -1,0 +1,17 @@
+{
+    "defaultTitle": "Tosar.eu",
+    "photosTitle": "Photos",
+    "aboutTitle": "Projets",
+    "aboutText": "Mes projets publics :",
+    "githubLink": "GitHub",
+    "npmProfileLink": "profil npm",
+    "contactTitle": "Contact",
+    "contactEmailText": "Envoyez-moi un email à :",
+    "linkedinText": "ou visitez mon Linkedin",
+    "emailCopied": "Email copié !",
+    "pdfReader": "Lecteur PDF",
+    "chat": "Chat IA",
+    "chatPresentation": "Bonjour, je suis un assistant virtuel créé par Christian.\nJe suis prêt à répondre à vos questions et à vous aider dans ce dont vous avez besoin !",
+    "chatInput": "Écrivez votre question ici...",
+    "chatResponse": "Haha, vous vous êtes fait avoir ! En fait, je n'avais pas prévu de dépenser de l'argent pour connecter cela à une API ou autre, mais si vous voulez savoir quelque chose sur moi, n'hésitez pas à demander ! Utilisez l'icône de contact ou ce lien :"
+}

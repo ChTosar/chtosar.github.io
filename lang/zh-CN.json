@@ -1,0 +1,17 @@
+{
+    "defaultTitle": "Tosar.eu",
+    "photosTitle": "照片",
+    "aboutTitle": "项目",
+    "aboutText": "我的公开项目：",
+    "githubLink": "GitHub",
+    "npmProfileLink": "npm 个人资料",
+    "contactTitle": "联系",
+    "contactEmailText": "发送电子邮件至：",
+    "linkedinText": "或访问我的 Linkedin",
+    "emailCopied": "电子邮件已复制！",
+    "pdfReader": "PDF 阅读器",
+    "chat": "AI 聊天",
+    "chatPresentation": "你好，我是由 Christian 创建的虚拟助手。\n我随时准备回答您的问题并为您提供帮助！",
+    "chatInput": "在这里输入您的问题...",
+    "chatResponse": "哈哈，你上当了！其实我并没有打算花钱把这个链接到一个 API 或其他东西，但如果你想了解我的一些事情，可以问我！使用联系图标或此链接："
+}
