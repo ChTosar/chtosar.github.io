@@ -24,9 +24,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./dist
           publish_branch: gh-pages
-          publish_repo: ${{ github.repository }}
           destination_dir: .
           force_orphan: true
           keep_files: false
           commit_message: "Deploy to GitHub Pages"
-
