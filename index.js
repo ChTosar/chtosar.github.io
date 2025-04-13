@@ -614,4 +614,66 @@ window.onload = async () => {
         });
         animateWaves();
     })();
+
+    (() => {
+        const draggable = document.querySelector('.des.icon.mycv');
+        const container = document.querySelector('.main');
+        const emptyImage = new Image();
+        emptyImage.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+        let offsetX, offsetY;
+        const position = localStorage.getItem('mycvPosition');
+        if (position) {
+            const [left, top] = position.split(',').map(Number);
+            draggable.style.position = 'absolute';
+            draggable.style.left = `${left}px`;
+            draggable.style.top = `${top}px`;
+        }
+        draggable.addEventListener('dragstart', (e) => {
+            draggable.classList.add('dragging');
+            e.dataTransfer.setDragImage(emptyImage, 0, 0);
+            const rect = draggable.getBoundingClientRect();
+            offsetX = e.clientX - rect.left;
+            offsetY = e.clientY - rect.top;
+        });
+
+        draggable.addEventListener('dragend', (e) => {
+            draggable.classList.remove('dragging');
+        });
+
+        container.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            const rect = container.getBoundingClientRect();
+            const x = e.clientX - rect.left - offsetX;
+            const y = e.clientY - rect.top - offsetY;
+            draggable.style.position = 'absolute';
+            draggable.style.left = `${x}px`;
+            draggable.style.top = `${y}px`;
+            localStorage.setItem('mycvPosition', `${x},${y}`);
+        });
+
+        container.addEventListener('contextmenu', (e) => {
+            console.log('right click');
+            e.preventDefault();
+            const contextMenu = document.createElement('div');
+            contextMenu.classList.add('context-menu');
+            contextMenu.innerHTML = `<span>Config</span>`;
+            contextMenu.style.left = `${e.clientX}px`;
+            contextMenu.style.top = `${e.clientY}px`;
+            contextMenu.style.position = 'absolute';
+            contextMenu.style.zIndex = 9999;
+            document.body.appendChild(contextMenu);
+
+            contextMenu.addEventListener('click', () => {
+                contextMenu.remove();
+            });
+            contextMenu.addEventListener('mouseleave', () => {
+                contextMenu.remove();
+            });
+            contextMenu.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
+        });
+        
+    })();
+
 }

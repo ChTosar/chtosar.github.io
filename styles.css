@@ -212,11 +212,13 @@ container .main {
 
 .main .des.icon {
     width: 70px;
-    height: 70px;
+    height: calc(70px + 1rem);
     cursor: pointer;
     border: 2px solid transparent;
 }
-
+.main .des.icon.dragging {
+    opacity: 0.5;
+}
 .main .des.icon.selected {
     border: 2px dotted var(--withe-contrast);
 }
