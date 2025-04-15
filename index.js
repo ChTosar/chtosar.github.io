@@ -1,6 +1,7 @@
 import "./windows.js";
 import "./calendar.js";
 import './styles.css';
+import './musicPlayer.js';
 
 const lang = {};
 let actualLang;
@@ -548,6 +549,35 @@ window.onload = async () => {
 
             win.center();
             icon.classList.add('selected');
+            win.onClose = () => {
+                icon.classList.remove('selected');
+            };
+        }
+    });
+
+    document.querySelector('.leftBar .icon.mplayer').addEventListener('click', () => {
+        const el = document.querySelector('custom-window[name="mplayer"]');
+
+        if (el) {
+            el.classList.add('selected');
+            if (el.classList.contains('expanded')) {
+                moveAnimationWindows(document.querySelector('container .mplayer'));
+            }
+        } else {
+            const icon = document.querySelector('.leftBar .icon.mplayer');
+            const win = document.createElement('custom-window');
+
+            win.innerHTML = `<music-player></music-player>`;
+
+            
+            win.title = lang.mplayer;
+            win.setAttribute('width', '480px');
+            win.setAttribute('name', 'mplayer');
+            document.querySelector('container').appendChild(win);
+
+            win.center();
+            icon.classList.add('selected');
+
             win.onClose = () => {
                 icon.classList.remove('selected');
             };

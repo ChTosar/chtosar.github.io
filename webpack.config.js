@@ -8,7 +8,7 @@ module.exports = {
     entry: './index.js',
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
+        filename: '[name].[contenthash].js',
         clean: true,
     },
     module: {
@@ -60,6 +60,7 @@ module.exports = {
                 { from: 'icon', to: 'icon' },
                 { from: 'imgs', to: 'imgs' },
                 { from: 'lang', to: 'lang' },
+                { from: 'music', to: 'music' },
                 { from: 'CNAME', to: '' }
             ]
         })
@@ -67,6 +68,13 @@ module.exports = {
     optimization: {
         splitChunks: {
             chunks: 'all',
-        }
-    }
+            cacheGroups: {
+                vendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendors',
+                    chunks: 'all',
+                },
+            },
+        },
+    },
 };

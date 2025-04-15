@@ -28,5 +28,9 @@
     "mini-css-extract-plugin": "^2.9.2",
     "webpack": "^5.0.0",
     "webpack-cli": "^5.0.0"
+  },
+  "dependencies": {
+    "classic-equalizer": "^0.1.4",
+    "music-metadata": "^11.1.1"
   }
 }
