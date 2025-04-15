@@ -189,7 +189,6 @@ class MusicPlayer extends HTMLElement {
             "barColor2": "#bcbcbc",
             "barColor3": "red"
         }));
-        this.equalizer.setAttribute('type', "html");
     }
 
     playAudio() {
