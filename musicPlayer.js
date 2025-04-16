@@ -41,6 +41,10 @@ class MusicPlayer extends HTMLElement {
                 }
                  .top .coverPlace {
                     margin-inline-end: 1rem;
+                    width: 60px;
+                    height: 60px;
+                    overflow: hidden;
+                    cursor: pointer;
                 }
                  .top .coverPlace img {
                     width: 60px;
