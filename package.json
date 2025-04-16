@@ -2,9 +2,10 @@
   "name": "chtosar.github.io",
   "version": "1.0.1",
   "main": "dist/index.html",
+  "type": "module",
   "scripts": {
     "server": "python3 -m http.server -d dist",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "build:debug": "webpack --mode development --devtool source-map",
     "build": "webpack --mode production"
   },
@@ -25,6 +26,8 @@
     "copy-webpack-plugin": "^13.0.0",
     "css-loader": "^7.1.2",
     "html-webpack-plugin": "^5.6.3",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "mini-css-extract-plugin": "^2.9.2",
     "webpack": "^5.0.0",
     "webpack-cli": "^5.0.0"

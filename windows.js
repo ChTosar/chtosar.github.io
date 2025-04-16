@@ -20,7 +20,7 @@ class CustomWindow extends HTMLElement {
 
         if (this.hasAttribute('no-expand')) {
             this.shadowRoot.querySelector('.actions .big').style.display = 'none';
-        } else if (screen.orientation.type === "portrait-primary") {
+        } else if (screen.orientation?.type === "portrait-primary") {
             this.toggleExpand();
         }
 
@@ -175,7 +175,9 @@ class CustomWindow extends HTMLElement {
     addEventListeners() {
         let offsetX = 0, offsetY = 0;
 
-        const maxTop = document.querySelector('.topBar').offsetHeight + 1; // TODO parameters
+        const topBar = document.querySelector('.topBar');
+
+        const maxTop = topBar? topBar.offsetHeight + 1 : 0; // TODO parameters
         const maxLeft = -160;
 
         this.header.addEventListener("mousedown", (e) => {
@@ -248,18 +250,25 @@ class CustomWindow extends HTMLElement {
     }
 
     upadateTitle() {
-        document.querySelector('.topBar .title').textContent = this.title;
+        const title = document.querySelector('.topBar .title');
+        if (title) {
+            title.textContent = this.title;
+        }
     }
     
     onClassChange() {
         if (this.classList.contains("selected")) {
             this.windowDiv.classList.add("selected");
             this.upadateTitle();
+            const actions = document.querySelector('.topBar .actions');
+
             document.querySelectorAll('custom-window').forEach(other => other != this ? other.classList.remove('selected'):0);
-            if (!this.classList.contains('expanded')) {
-                document.querySelector('.topBar .actions').classList.add('hidden');
-            } else {
-                document.querySelector('.topBar .actions').classList.remove('hidden');
+            if (actions) {
+                if (!this.classList.contains('expanded')) {
+                    actions.classList.add('hidden');
+                } else {
+                    actions.classList.remove('hidden');
+                }
             }
         } else {
             this.windowDiv.classList.remove("selected");
@@ -310,14 +319,17 @@ class CustomWindow extends HTMLElement {
                 if (progress < 1) {
                     requestAnimationFrame(animateExpand);
                 } else {
-                    const leftGap = screen.orientation.type === "landscape-primary" ? 100 : 0;
+                    const leftGap = screen.orientation?.type === "landscape-primary" ? 100 : 0;
                     this.isExpanded = true;
                     this.windowDiv.classList.add('expanded');
                     this.classList.add('expanded');
-                    document.querySelector('container').scrollTo({
-                        left: this.offsetLeft-leftGap,
-                    });
-                    document.querySelector('.actions').classList.remove('hidden');
+                    const container = document.querySelector('container');
+                    if (container) {
+                        container.scrollTo({
+                            left: this.offsetLeft-leftGap,
+                        });
+                        document.querySelector('.actions').classList.remove('hidden');
+                    }
                 }
             }
 
@@ -332,7 +344,7 @@ class CustomWindow extends HTMLElement {
             this.classList.remove('expanded');
 
             if (document.querySelectorAll('custom-window.expanded').length == 0) {
-                document.querySelector('.actions').classList.add('hidden');
+                document.querySelector('.actions')?.classList.add('hidden');
             }
 
             this.isExpanded = false;
