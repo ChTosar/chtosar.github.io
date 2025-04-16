@@ -13,5 +13,6 @@
     "chat": "AI Xat",
     "chatPresentation": "Hola, sóc un assistent virtual creat per Christian.\nEstic preparat per respondre les teves preguntes i ajudar-te en el que necessitis!",
     "chatInput": "Escriu aquí la teva pregunta...",
-    "chatResponse": "Haha, has picat! En realitat no tenia pensat gastar diners per vincular això a una API o alguna cosa, però si vols saber alguna cosa de mi, pots preguntar-me! Utilitza la icona de contacte o aquest enllaç:"
+    "chatResponse": "Haha, has picat! En realitat no tenia pensat gastar diners per vincular això a una API o alguna cosa, però si vols saber alguna cosa de mi, pots preguntar-me! Utilitza la icona de contacte o aquest enllaç:",
+    "mplayer": "Music player"
 }

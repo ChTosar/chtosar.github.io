@@ -13,5 +13,6 @@
     "chat": "AI Txata",
     "chatPresentation": "Kaixo, Christianrek sortutako laguntzaile birtuala naiz.\nPrest nago zure galderei erantzuteko eta behar duzun guztian laguntzeko!",
     "chatInput": "Idatzi hemen zure galdera...",
-    "chatResponse": "Haha, engainatu zaitut! Egia esan, ez nuen dirurik gastatu nahi hau API batera edo antzeko zerbaitetara lotzeko, baina nire inguruan zerbait jakin nahi baduzu, galdetu lasai! Erabili kontaktu ikonoa edo esteka hau:"
+    "chatResponse": "Haha, engainatu zaitut! Egia esan, ez nuen dirurik gastatu nahi hau API batera edo antzeko zerbaitetara lotzeko, baina nire inguruan zerbait jakin nahi baduzu, galdetu lasai! Erabili kontaktu ikonoa edo esteka hau:",
+    "mplayer": "Music player"
 }

@@ -270,48 +270,9 @@ container span {
     display: inline-block;
 }
 
-custom-window .photos{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    column-gap: 0.5rem;
-    justify-content: space-between;
-    align-content: flex-start;
-    box-sizing: border-box;
-    overflow: auto;
-    height: 100%;
-    width: 100%;
-    padding: 1rem;
-    padding-top: calc(26px + 1rem) !important;
-    padding-bottom: 10rem;
-}
-
-custom-window  .photos.smallSize .photo{
-    width: calc(33% - 1rem);
-}
-
-@media screen and (max-width: 800px) {
-    custom-window .photos .photo {
-        width: calc(33% - 1rem);
-    }
-}
-
-.expanded .photos {
-    padding-top: 3rem;
-}
-
 .expanded .chat {
     padding-inline-start: 1rem;
     padding-top: calc(26px + 1rem) !important;
-}
-
-custom-window .photo{
-    width: calc(25% - 0.5rem);
-    margin-bottom: 1rem;
-    aspect-ratio: 3 / 4;
-    z-index: 2;
-    box-sizing: border-box;
-    box-shadow: 0 0px 10px 0px #00000050;
 }
 
 time:hover {
@@ -326,21 +287,6 @@ my-calendar {
     background: rgb(28 28 28 / 50%);
     display: none;
     z-index: 100;
-}
-
-custom-window .photo:hover img {
-    transition: filter 200ms ease-in-out;
-    filter: brightness(1.08);
-}
-
-container .photos img{
-    width: 100%;
-    border-radius: 7px;
-    aspect-ratio: 3 / 4;
-    object-fit: cover; 
-    cursor: pointer;
-    user-select: none;
-    -webkit-user-select: none;
 }
 
 @keyframes expandToFull {
