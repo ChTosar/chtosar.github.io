@@ -38,7 +38,7 @@ async function loadLanguage(language) {
     }
 
     console.warn(`Falling back to default language.`);
-    const response = await fetch('./lang/en-us.json');
+    const response = await fetch('./lang/en-US.json');
     Object.assign(lang, await response.json());
     document.querySelector('html').setAttribute('lang', 'en');
 }
