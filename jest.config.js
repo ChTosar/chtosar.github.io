@@ -6,4 +6,7 @@ export default {
     transform: {
         '^.+\\.js$': 'babel-jest', // Usa Babel para transformar archivos .js
     },
+    moduleNameMapper: {
+        "^music-metadata$": "<rootDir>/__mocks__/music-metadata.js", // Redirige a un mock
+    },
 };

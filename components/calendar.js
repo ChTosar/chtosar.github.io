@@ -3,7 +3,6 @@ class MyCalendar extends HTMLElement {
         super();
         const shadow = this.attachShadow({ mode: 'open' });
 
-        // Estilos del calendario
         const style = document.createElement('style');
         style.textContent = `
             :host {

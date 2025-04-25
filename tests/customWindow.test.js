@@ -1,4 +1,4 @@
-import '../windows.js';
+import '../components/windows.js';
 
 describe('CustomWindow', () => {
     let customWindow;

@@ -1,8 +1,8 @@
-import "./windows.js";
-import "./calendar.js";
 import './styles.css';
-import './musicPlayer.js';
-import './photos.js';
+import "./components/windows.js";
+import "./components/calendar.js";
+import './components/musicPlayer.js';
+import './components/photos.js';
 
 const lang = {};
 let actualLang;
