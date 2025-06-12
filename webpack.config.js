@@ -26,6 +26,14 @@ export default {
             {
                 test: /\.css$/,
                 use: [MiniCssExtractPlugin.loader, 'css-loader']
+            },
+            {
+                test: /\.scss$/i,
+                use: [
+                    'to-string-loader',
+                    'css-loader',
+                    'sass-loader'
+                ]
             }
         ]
     },

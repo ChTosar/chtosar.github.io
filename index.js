@@ -134,7 +134,7 @@ window.onload = async () => {
             el.classList.add('selected');
 
             if (el.classList.contains('expanded')) {
-                moveAnimationWindows(document.querySelector('container .photos'));
+                moveAnimationWindows(el);
             }
         } else {
             const win = document.createElement('custom-window');
@@ -162,7 +162,7 @@ window.onload = async () => {
             el.classList.add('selected');
 
             if (el.classList.contains('expanded')) {
-                moveAnimationWindows(document.querySelector('container .about'));
+                moveAnimationWindows(el);
             }
         } else {
             const icon = document.querySelector('.leftBar .icon.about');
@@ -244,7 +244,7 @@ window.onload = async () => {
         if (el) {
             el.classList.add('selected');
             if (el.classList.contains('expanded')) {
-                moveAnimationWindows(document.querySelector('container .contact'));
+                moveAnimationWindows(el);
             }
         } else {
             const icon = document.querySelector('.leftBar .icon.contact');
@@ -306,7 +306,7 @@ window.onload = async () => {
         if (el) {
             el.classList.add('selected');
             if (el.classList.contains('expanded')) {
-                moveAnimationWindows(document.querySelector('container .cv'));
+                moveAnimationWindows(el);
             }
         }
     });
@@ -409,7 +409,7 @@ window.onload = async () => {
         if (el) {
             el.classList.add('selected');
             if (el.classList.contains('expanded')) {
-                moveAnimationWindows(document.querySelector('container .chat'));
+                moveAnimationWindows(el);
             }
         } else {
             const win = document.createElement('custom-window');
@@ -471,7 +471,7 @@ window.onload = async () => {
         if (el) {
             el.classList.add('selected');
             if (el.classList.contains('expanded')) {
-                moveAnimationWindows(document.querySelector('container .mplayer'));
+                moveAnimationWindows(el);
             }
         } else {
             const icon = document.querySelector('.leftBar .icon.mplayer');

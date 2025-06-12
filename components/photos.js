@@ -1,3 +1,4 @@
+import styles from './photos.scss';
 class Photos extends HTMLElement {
 
     constructor() {
@@ -12,62 +13,10 @@ class Photos extends HTMLElement {
     }
 
     render() {
-        this.shadowRoot.innerHTML = `
-            <style>
-                .photos{
-                    display: flex;
-                    flex-wrap: wrap;
-                    align-items: center;
-                    column-gap: 0.5rem;
-                    justify-content: space-between;
-                    align-content: flex-start;
-                    box-sizing: border-box;
-                    overflow: auto;
-                    height: 100%;
-                    width: 100%;
-                    padding: 1rem;
-                    padding-top: calc(26px + 1rem) !important;
-                    padding-bottom: 10rem;
-                }
-                .photos.smallSize .photo{
-                    width: calc(33% - 1rem);
-                }
-
-                .photo{
-                    width: calc(25% - 0.5rem);
-                    margin-bottom: 1rem;
-                    aspect-ratio: 3 / 4;
-                    z-index: 2;
-                    box-sizing: border-box;
-                    box-shadow: 0 0px 10px 0px #00000050;
-                }
-
-                .photo:hover img {
-                    transition: filter 200ms ease-in-out;
-                    filter: brightness(1.08);
-                }
-
-                .photos img{
-                    width: 100%;
-                    border-radius: 7px;
-                    aspect-ratio: 3 / 4;
-                    object-fit: cover; 
-                    cursor: pointer;
-                    user-select: none;
-                    -webkit-user-select: none;
-                }
-                
-                @media screen and (max-width: 800px) {
-                    .photos .photo {
-                        width: calc(33% - 1rem);
-                    }
-                }
-
-                .expanded .photos {
-                    padding-top: 3rem;
-                }
-            </style>
-            <div class="photos"></div>`;
+        const style = document.createElement('style');
+        style.textContent = styles;
+        this.shadowRoot.innerHTML = `<div class="photos"></div>`;
+        this.shadowRoot.append(style);
     }
 
     init() {

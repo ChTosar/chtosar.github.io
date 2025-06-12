@@ -21,7 +21,7 @@ class CustomWindow extends HTMLElement {
         if (this.hasAttribute('no-expand')) {
             this.shadowRoot.querySelector('.actions .big').style.display = 'none';
         } else if (screen.orientation?.type === "portrait-primary") {
-            this.toggleExpand();
+            this.toggleExpand({animate:false});
         }
 
         if (this.hasAttribute('no-resize')) {
@@ -291,7 +291,7 @@ class CustomWindow extends HTMLElement {
         this.remove();
     }
 
-    toggleExpand() {
+    toggleExpand(options) {
         if (!this.isExpanded) {
 
             this.initialState = {
@@ -309,7 +309,7 @@ class CustomWindow extends HTMLElement {
             const targetHeight = window.innerHeight;
 
             const animateExpand = (time) => {
-                const progress = Math.min((time - startTime) / duration, 1);
+                const progress = options?.animate == false ? 100 : Math.min((time - startTime) / duration, 1);
 
                 this.windowDiv.style.left = `${this.initialState.left + (targetLeft - this.initialState.left) * progress}px`;
                 this.windowDiv.style.top = `${this.initialState.top + (targetTop - this.initialState.top) * progress}px`;
