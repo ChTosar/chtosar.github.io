@@ -1,5 +1,6 @@
 import "classic-equalizer";
 import { parseBlob } from 'music-metadata';
+import styles from './musicPlayer.scss';
 
 class MusicPlayer extends HTMLElement {
     constructor() {
@@ -14,110 +15,6 @@ class MusicPlayer extends HTMLElement {
 
     render() {
         this.shadowRoot.innerHTML = `
-            <style>
-                .mplayer {
-                    margin-top:30px;
-                }
-                 .top {
-                    display: flex;
-                    flex-wrap: wrap;
-                    justify-content: flex-start;
-                    padding: 1rem;
-                    box-sizing: border-box;
-                }
-                 .title {
-                    flex: 1;
-                    display: flex;
-                    flex-wrap: wrap;
-                    align-content: space-between;
-                }
-                 .title .subtitle {
-                    width: 100%;
-                    display: inline-block;
-                    font-size: 0.8rem;
-                    color: var(--withe-contrast);
-                    display: flex;
-                    justify-content: space-between;
-                }
-                 .top .coverPlace {
-                    margin-inline-end: 1rem;
-                    width: 60px;
-                    height: 60px;
-                    overflow: hidden;
-                    cursor: pointer;
-                }
-                 .top .coverPlace img {
-                    width: 60px;
-                    height: 60px;
-                    border-radius: 2%;
-                }
-
-                 .equalizer img {
-                    max-width: 240px;
-                }
-                 .top .coverPlace classic-equalizer{
-                    max-width: 60px;
-                    max-height: 60px;
-                }
-                  .title .name {
-                    width: 100%;
-                    display: inline-block;
-                }
-
-                 .mProgress {
-                    width: 100%;
-                    display: flex;
-                    justify-content: space-between;
-                    flex-wrap: wrap;
-                }
-
-                 .mProgress .progressBar {
-                    width: 100%;
-                    height: 5px;
-                    background-color: var(--withe-contrast);
-                    border-radius: 5px;
-                    position: relative;
-                    margin-bottom: 1rem;
-                }
-
-                 .mProgress .progressBarFill {
-                    width: 0;
-                    height: 100%;
-                    background-color: white;
-                    border-radius: 5px;
-                }
-                 .mProgress .progressBarFill:hover {
-                    cursor: pointer;
-                }
-
-                 .mProgress,
-                 .controls {
-                    padding: 1rem;
-                    box-sizing: border-box;
-                    display: flex;
-                }
-                 .controls>div {
-                    background: #222222;
-                    display: inline-block;
-                    border-radius: 100%;
-                    height: 30px;
-                    width: 30px;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    cursor: pointer;
-                    margin-inline-end: 1rem;
-                }
-
-                 .equalizer {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    padding: 1rem;
-                    box-sizing: border-box;
-                    width: 100%;
-                }
-            </style>
             <div class="mplayer">
                 <audio class="audio" src="./music/Agora.mp3" preload="metadata"></audio>
                 <div class="top">
@@ -151,6 +48,9 @@ class MusicPlayer extends HTMLElement {
                     </div>
                 </div>
             </div>`;
+        const style = document.createElement('style');
+        style.textContent = styles;
+        this.shadowRoot.appendChild(style);
     }
 
     init() {
