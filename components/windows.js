@@ -1,3 +1,4 @@
+import styles from './windows.scss';
 class CustomWindow extends HTMLElement {
 
     title;
@@ -34,140 +35,34 @@ class CustomWindow extends HTMLElement {
     render() {
         this.shadowRoot.innerHTML = `
             <style>
-                .window {
-                    border-radius: 8px;
-                    position: fixed;
-                    width: ${this.windowWidth};
-                    height: ${this.windowHeight};
-                    min-width: ${this.minWidth}px;
-                    min-height: ${this.minHeight}px;
-                    top: 60px;
-                    left: 120px;
-                    border: 2px solid var(--withe-contrast);
-                    box-shadow: -1px 10px 20px #00000080;
-                    max-height: 100vh;
-                    max-width: calc(100vw - 100px);
-                    user-select: none;
-                    -webkit-user-select: none;
-                    overflow: hidden;
-                }
-
-                .window.no-resize {
-                    resize: none;
-                    cursor: default;
-                }
-
-                .window:not(.selected) .big,
-                .window:not(.selected) .close {
-                    background-color: grey;
-                }
-
-                .window.expanded {
-                    position: static;
-                    border: none;
-                    width: calc(100vw - 100px) !important;
-                    height: 100vh !important;
-                }
-
-                .window .bar {
-                    min-width: 60px;
-                    border-bottom: solid 2px var(--withe-contrast);
-                    padding: 5px 12px;
-                    box-sizing: border-box;
-                    display: flex;
-                    justify-content: space-between;
-                    z-index: 3;
-                    position: absolute;
-                    width: 100%;
-                    backdrop-filter: blur(4px);
-                    background: #0000008a;
-                }
-
-                .window.expanded .bar {
-                    display: none;
-                }
-
-                .window .content {
-                    min-height: ${this.minHeight}px;
-                    height: 100%;
-                    width: 100%;
-                    padding: 0;
-                    box-sizing: border-box;
-                    user-select: text;
-                    -webkit-user-select: text;
-                    backdrop-filter: blur(4px);
-                    background: #0000008a;
-                }
-
-                slot>* {
-                    padding-top:30px;
-                }
-
-                .window.expanded .content {
-                    height: calc(100%);
-                }
-                
-                .actions {
-                    display: flex;
-                    gap: 5px;
-                }
-
-                .actions.expanded.selected {
-                    display: flex;
-                }
-
-                .actions div {
-                    border-radius: 20px;
-                    width: 14px;
-                    height: 14px;
-                    margin-inline-end: 0.5rem;
-                    cursor: pointer;
-                    display: inline-block;
-                }
-
-                .actions svg {
-                    transform: scale(1.2);
-                    display: none;
-                }
-
-                .big { background-color: #4caf50; }
-                .close { background-color: #f44336; }
-
-                .actions:hover svg {
-                    display: block;
-                }
-
-                @media (orientation: portrait) {
-                        
-                    .window.expanded {
-                        width: 100vw !important;
-                        max-width: 100vw !important;
-                    }
-
+                :host {
+                    --window-width: ${this.windowWidth};
+                    --window-height: ${this.windowHeight};
+                    --window-min-width: ${this.minWidth}px;
+                    --window-min-height: ${this.minHeight}px;
                 }
             </style>
-
             <div class="window">
-                <div class="bar">
-                    <div class="actions">
-                        <div class="close">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                                <path xmlns="http://www.w3.org/2000/svg" d="M16 8L8 16M12 12L16 16M8 8L10 10" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                        <div class="big">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-                                <path d="M9 14L12 17L15 14M10.5 8.5L9 10M15 10L12 7" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </div>
-                    </div>
+            <div class="bar">
+                <div class="actions">
+                <div class="close">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                    <path xmlns="http://www.w3.org/2000/svg" d="M16 8L8 16M12 12L16 16M8 8L10 10" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
                 </div>
-                <div class="content">
-                    <slot></slot>
+                <div class="big">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
+                    <path d="M9 14L12 17L15 14M10.5 8.5L9 10M15 10L12 7" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
                 </div>
             </div>
+            <div class="content">
+                <slot></slot>
+            </div>
+            </div>
         `;
-
+        this.shadowRoot.querySelector('style').textContent += styles;
         this.windowDiv = this.shadowRoot.querySelector(".window");
         this.header = this.shadowRoot.querySelector(".bar");
     }
