@@ -11,5 +11,9 @@
     "emailCopied": "Электронная почта скопирована!",
     "pdfReader": "Читалка PDF",
     "chat": "AI Chat",
-    "mplayer": "Music player"
+    "mplayer": "Music player",
+    "today": "Сегодня",
+    "songName": "Название песни",
+    "songAlbum": "Альбом",
+    "songArtist": "Исполнитель"
 }

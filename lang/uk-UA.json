@@ -11,5 +11,9 @@
     "emailCopied": "Електронна пошта скопійована!",
     "pdfReader": "Переглядач PDF",
     "chat": "AI Chat",
-    "mplayer": "Music player"
+    "mplayer": "Music player",
+    "today": "Сьогодні",
+    "songName": "Назва пісні",
+    "songAlbum": "Альбом",
+    "songArtist": "Виконавець"
 }
