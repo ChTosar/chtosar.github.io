@@ -1,4 +1,7 @@
 import styles from './calendar.scss';
+import i18n from '../utils/lang.js';
+
+const lang = i18n.translations;
 class MyCalendar extends HTMLElement {
     constructor() {
         super();
@@ -8,13 +11,15 @@ class MyCalendar extends HTMLElement {
         style.textContent = styles;
 
         const container = document.createElement('div');
+
+        /*html*/
         container.innerHTML = `
             <div class="header">
                 <span id="month"></span>
                 <span id="year"></span>
                 <div class="buttons">
                     <button id="prev">&lt;</button>
-                    <button id="today">Hoy</button>
+                    <button id="today">${lang.today}</button>
                     <button id="next">&gt;</button>
                 </div>
             </div>

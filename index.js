@@ -3,50 +3,11 @@ import "./components/windows.js";
 import "./components/calendar.js";
 import './components/musicPlayer.js';
 import './components/photos.js';
-
-const lang = {};
-let actualLang;
-const availableLanguages = ["en-US", "es-ES", "gl-ES", "ca-ES", "pt-PT", "fr-FR", "de-DE", "it-IT", "zh-CN", "ja-JP", "ar", "ru-RU", "vi-VN", "uk-UA"];
-
-async function loadLanguage(language) {
-    const userPrefLang = localStorage.getItem('preferredLanguage');
-    const userLang = !language && userPrefLang ? userPrefLang : (language || navigator.language || "en-US");
-    const baseLang = userLang.split("-")[0];
-
-    if (availableLanguages.includes(userLang)) {
-        try {
-            const response = await fetch(`./lang/${userLang}.json`);
-            Object.assign(lang, await response.json());
-            actualLang = userLang;
-            document.querySelector('html').setAttribute('lang', actualLang.split("-")[0]);
-            return;
-        } catch (error) {
-            console.error(`Error loading language file for ${userLang}:`, error);
-        }
-    }
-
-    const partialMatch = availableLanguages.find(langCode => langCode.startsWith(baseLang));
-    if (partialMatch) {
-        try {
-            const response = await fetch(`./lang/${partialMatch}.json`);
-            Object.assign(lang, await response.json());
-            actualLang = userLang;
-            document.querySelector('html').setAttribute('lang', actualLang.split("-")[0]);
-            return;
-        } catch (error) {
-            console.error(`Error loading language file for ${partialMatch}:`, error);
-        }
-    }
-
-    console.warn(`Falling back to default language.`);
-    const response = await fetch('./lang/en-US.json');
-    Object.assign(lang, await response.json());
-    document.querySelector('html').setAttribute('lang', 'en');
-}
+import i18n from './utils/lang.js';
 
 window.onload = async () => {
-    await loadLanguage();
 
+    const lang = i18n.translations;
     const timePlace = document.querySelector('.topBar time');
 
     function updateTime() {
@@ -95,16 +56,15 @@ window.onload = async () => {
             const newLangMenu = document.createElement('div');
             newLangMenu.classList.add('langMenu');
 
-            availableLanguages.forEach(langCode => {
+            i18n.availableLanguages.forEach(langCode => {
                 const langItem = document.createElement('span');
                 langItem.classList.add('lang');
-                if(langCode === actualLang) {
+                if(langCode === i18n.lang) {
                     langItem.classList.add('selected');
                 }
                 langItem.textContent = langCode;
                 langItem.addEventListener('click', async () => {
-                    await loadLanguage(langCode);
-                    actualLang = langCode;
+                    await i18n.loadLang(langCode);
                     newLangMenu.remove();
                     localStorage.setItem('preferredLanguage', langCode);
                 });
@@ -356,7 +316,7 @@ window.onload = async () => {
         } const icon = document.querySelector('.leftBar .icon.cv');
         const win = document.createElement('custom-window');
 
-        win.innerHTML = `<div class="pdfContent"><iframe src="./docs/CVCH${actualLang == 'es-ES'? '': '_ING'}.pdf" frameborder="0" width="100%" height="100%"></iframe></div>`;
+        win.innerHTML = `<div class="pdfContent"><iframe src="./docs/CVCH${i18n.lang == 'es-ES'? '': '_ING'}.pdf" frameborder="0" width="100%" height="100%"></iframe></div>`;
         
         win.title = lang.pdfReader;
         win.setAttribute('width', '840px');

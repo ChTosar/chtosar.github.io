@@ -1,7 +1,9 @@
 import "classic-equalizer";
 import { parseBlob } from 'music-metadata';
 import styles from './musicPlayer.scss';
+import i18n from '../utils/lang.js';
 
+const lang = i18n.translations;
 class MusicPlayer extends HTMLElement {
     constructor() {
         super();
@@ -14,6 +16,7 @@ class MusicPlayer extends HTMLElement {
     }
 
     render() {
+        /*html*/
         this.shadowRoot.innerHTML = `
             <div class="mplayer">
                 <audio class="audio" src="./music/Agora.mp3" preload="metadata"></audio>
@@ -22,10 +25,10 @@ class MusicPlayer extends HTMLElement {
                         <img src="./imgs/cover.jpg" alt="cover" class="cover">
                     </div>
                     <div class="title">
-                        <span class="name">Song name</span>
+                        <span class="name">${lang.songName}</span>
                         <div class="subtitle">
-                            <span class="album">Song Album</span>
-                            <span class="artist">Artist</span>
+                            <span class="album">${lang.songAlbum}</span>
+                            <span class="artist">${lang.songArtist}</span>
                         </div>
                     </div>
                 </div>
