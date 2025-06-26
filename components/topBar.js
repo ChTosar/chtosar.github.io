@@ -1,4 +1,6 @@
 import i18n from '../utils/lang.js';
+import './components/calendar.js';
+
 const lang = i18n.translations;
 
 class ClockController {

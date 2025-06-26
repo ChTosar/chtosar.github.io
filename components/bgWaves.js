@@ -1,38 +1,67 @@
-const paths = document.querySelectorAll('svg.bg path');
-let tick = 0;
-const speeds = [3, 9, 1];
-function animateWaves() {
-  tick += 0.001;
-  paths.forEach((path, i) => {
-    const tickL = tick * speeds[i];
-    i = i + 1;
-    const offset = i * 4.5;
-    const amplitude = i * 28;
-    const frequency = 0.001 + i * 0.0005;
+class WaveAnimator {
+  constructor(svgSelector, speeds = [3, 9, 1]) {
+    this.svg = document.querySelector(svgSelector);
+    this.paths = this.svg.querySelectorAll('path');
+    this.speeds = speeds;
+    this.tick = 0;
 
-    const width = Math.ceil(svg.clientWidth * 0.01) * 100;
+    this.svg.style.width = '100%';
+    this.svg.style.height = '100%';
+    this.updateViewBox();
+    this.onResize();
+    this.animate();
+  }
 
-    let d = `M0 0 `;
-    let startY =
-      500 + Math.random() * 10 + Math.sin(tickL + offset) * amplitude;
-    d += `L0 ${startY.toFixed(2)} `;
+  updateViewBox() {
+    this.svg.setAttribute(
+      'viewBox',
+      `0 0 ${this.svg.clientWidth} ${this.svg.clientHeight}`
+    );
+  }
 
-    for (let x = 100; x <= width; x += 100) {
-      const y = 500 + Math.sin(x * frequency + tickL + offset) * amplitude;
-      d += `L${x} ${y.toFixed(2)} `;
-    }
+  onResize = () => {
+    window.addEventListener('resize', () => this.updateViewBox());
+  }
 
-    d += `L${width} 0 Z`;
-    path.setAttribute('d', d);
-  });
-  requestAnimationFrame(animateWaves);
+  animate = () => {
+    this.tick += 0.001;
+    const width = Math.ceil(this.svg.clientWidth / 100) * 100;
+    const baseY = 500;
+
+    this.paths.forEach((path, index) => {
+      const tickSpeed = this.tick * this.speeds[index];
+      const layerIndex = index + 1;
+      const offset = layerIndex * 4.5;
+      const amplitude = layerIndex * 28;
+      const frequency = 0.001 + layerIndex * 0.0005;
+
+      let d = `M0 0 L0 ${this.calcY(
+        baseY,
+        tickSpeed,
+        offset,
+        amplitude
+      ).toFixed(2)} `;
+
+      for (let x = 100; x <= width; x += 100) {
+        const y = this.calcY(
+          baseY,
+          tickSpeed + x * frequency,
+          offset,
+          amplitude
+        );
+        d += `L${x} ${y.toFixed(2)} `;
+      }
+
+      d += `L${width} 0 Z`;
+      path.setAttribute('d', d);
+    });
+
+    requestAnimationFrame(this.animate);
+  };
+
+  calcY(base, time, offset, amplitude) {
+    return base + Math.sin(time + offset) * amplitude;
+  }
 }
 
-const svg = document.querySelector('svg.bg');
-svg.style.width = '100%';
-svg.style.height = '100%';
-svg.setAttribute('viewBox', `0 0 ${svg.clientWidth} ${svg.clientHeight}`);
-window.addEventListener('resize', () => {
-  svg.setAttribute('viewBox', `0 0 ${svg.clientWidth} ${svg.clientHeight}`);
-});
-animateWaves();
+const waveAnimator = new WaveAnimator('svg.bg');

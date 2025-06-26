@@ -1,115 +1,123 @@
 import i18n from '../utils/lang.js';
 
-const lang = i18n.translations;
-
-const cv = document.querySelector('.des.icon.mycv');
-cv.addEventListener('dblclick', () => {
-  if (document.querySelector('custom-window[name="cv"]')) {
-    document
-      .querySelector('custom-window[name="cv"]')
-      .classList.add('selected');
-    return;
+export class CvWindowController {
+  constructor(cvSelector) {
+    this.cvIcon = document.querySelector(cvSelector);
+    this.lang = i18n.lang;
+    this.translations = i18n.translations;
+    this.init();
   }
-  const icon = document.querySelector('.leftBar .icon.cv');
-  const win = document.createElement('custom-window');
 
-  win.innerHTML = `<div class="pdfContent"><iframe src="./docs/CVCH${
-    i18n.lang == 'es-ES' ? '' : '_ING'
-  }.pdf" frameborder="0" width="100%" height="100%"></iframe></div>`;
-
-  win.title = lang.pdfReader;
-  win.setAttribute('width', '840px');
-  win.setAttribute('height', '90%');
-  win.setAttribute('name', 'cv');
-  cv.classList.remove('selected');
-
-  document.querySelector('container').appendChild(win);
-  win.center();
-  icon.style.display = 'block';
-  setTimeout(() => {
-    icon.classList.remove('hidden');
-  }, 100);
-  icon.classList.add('selected');
-
-  win.onClose = () => {
-    icon.classList.add('hidden');
-    icon.classList.remove('selected');
-  };
-
-  const iframe = win.querySelector('iframe');
-
-  const activeIframe = () => {
-    iframe.style.pointerEvents = 'auto';
-    iframe.click();
-    iframe.addEventListener('mouseleave', () => {
-      iframe.style.pointerEvents = 'none';
+  init() {
+    this.cvIcon?.addEventListener('dblclick', () => this.openCvWindow());
+    this.cvIcon?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.cvIcon.classList.add('selected');
     });
-  };
+  }
 
-  win.querySelector('.pdfContent').addEventListener('wheel', activeIframe);
-  win.querySelector('.pdfContent').addEventListener('click', activeIframe);
-});
+  openCvWindow() {
+    if (document.querySelector('custom-window[name="cv"]')) {
+      document
+        .querySelector('custom-window[name="cv"]')
+        .classList.add('selected');
+      return;
+    }
 
-cv.addEventListener('click', (e) => {
-  e.stopPropagation();
-  cv.classList.add('selected');
-});
+    const win = document.createElement('custom-window');
+    const icon = document.querySelector('.leftBar .icon.cv');
+    const pdfFile = this.lang === 'es-ES' ? 'CVCH.pdf' : 'CVCH_ING.pdf';
 
-const draggable = document.querySelector('.des.icon.mycv');
-const container = document.querySelector('.main');
-const emptyImage = new Image();
-emptyImage.src =
-  'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
-let offsetX, offsetY;
-const position = localStorage.getItem('mycvPosition');
-if (position) {
-  const [left, top] = position.split(',').map(Number);
-  draggable.style.position = 'absolute';
-  draggable.style.left = `${left}px`;
-  draggable.style.top = `${top}px`;
+    /*html*/
+    win.innerHTML = `
+      <div class="pdfContent">
+        <iframe src="./docs/${pdfFile}" frameborder="0" width="100%" height="100%"></iframe>
+      </div>`;
+
+    win.title = this.translations.pdfReader;
+    win.setAttribute('width', '840px');
+    win.setAttribute('height', '90%');
+    win.setAttribute('name', 'cv');
+
+    document.querySelector('container')?.appendChild(win);
+    win.center?.();
+
+    icon.style.display = 'block';
+    icon.classList.add('selected');
+    setTimeout(() => icon.classList.remove('hidden'), 100);
+
+    win.onClose = () => {
+      icon.classList.add('hidden');
+      icon.classList.remove('selected');
+    };
+
+    const iframe = win.querySelector('iframe');
+    const activateIframe = () => {
+      iframe.style.pointerEvents = 'auto';
+      iframe.click();
+      iframe.addEventListener(
+        'mouseleave',
+        () => {
+          iframe.style.pointerEvents = 'none';
+        },
+        { once: true }
+      );
+    };
+
+    win.querySelector('.pdfContent').addEventListener('wheel', activateIframe);
+    win.querySelector('.pdfContent').addEventListener('click', activateIframe);
+  }
 }
-draggable.addEventListener('dragstart', (e) => {
-  draggable.classList.add('dragging');
-  e.dataTransfer.setDragImage(emptyImage, 0, 0);
-  const rect = draggable.getBoundingClientRect();
-  offsetX = e.clientX - rect.left;
-  offsetY = e.clientY - rect.top;
-});
 
-draggable.addEventListener('dragend', () => {
-  draggable.classList.remove('dragging');
-});
+export class DraggableIcon {
+  constructor(selector, containerSelector, localStorageKey) {
+    this.el = document.querySelector(selector);
+    this.container = document.querySelector(containerSelector);
+    this.key = localStorageKey;
+    this.emptyImage = new Image();
+    this.emptyImage.src =
+      'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';
+    this.init();
+  }
 
-container.addEventListener('dragover', (e) => {
-  e.preventDefault();
-  const rect = container.getBoundingClientRect();
-  const x = e.clientX - rect.left - offsetX;
-  const y = e.clientY - rect.top - offsetY;
-  draggable.style.position = 'absolute';
-  draggable.style.left = `${x}px`;
-  draggable.style.top = `${y}px`;
-  localStorage.setItem('mycvPosition', `${x},${y}`);
-});
+  init() {
+    this.restorePosition();
+    this.el?.addEventListener('dragstart', (e) => this.onDragStart(e));
+    this.el?.addEventListener('dragend', () =>
+      this.el.classList.remove('dragging')
+    );
+    this.container?.addEventListener('dragover', (e) => this.onDragOver(e));
+  }
 
-container.addEventListener('contextmenu', (e) => {
-  console.log('right click');
-  e.preventDefault();
-  const contextMenu = document.createElement('div');
-  contextMenu.classList.add('context-menu');
-  contextMenu.innerHTML = `<span>Config</span>`;
-  contextMenu.style.left = `${e.clientX}px`;
-  contextMenu.style.top = `${e.clientY}px`;
-  contextMenu.style.position = 'absolute';
-  contextMenu.style.zIndex = 9999;
-  document.body.appendChild(contextMenu);
+  restorePosition() {
+    const position = localStorage.getItem(this.key);
+    if (position) {
+      const [left, top] = position.split(',').map(Number);
+      this.el.style.position = 'absolute';
+      this.el.style.left = `${left}px`;
+      this.el.style.top = `${top}px`;
+    }
+  }
 
-  contextMenu.addEventListener('click', () => {
-    contextMenu.remove();
-  });
-  contextMenu.addEventListener('mouseleave', () => {
-    contextMenu.remove();
-  });
-  contextMenu.addEventListener('dragover', (e) => {
+  onDragStart(e) {
+    this.el.classList.add('dragging');
+    e.dataTransfer.setDragImage(this.emptyImage, 0, 0);
+    const rect = this.el.getBoundingClientRect();
+    this.offsetX = e.clientX - rect.left;
+    this.offsetY = e.clientY - rect.top;
+  }
+
+  onDragOver(e) {
     e.preventDefault();
-  });
-});
+    const rect = this.container.getBoundingClientRect();
+    const x = e.clientX - rect.left - this.offsetX;
+    const y = e.clientY - rect.top - this.offsetY;
+    this.el.style.position = 'absolute';
+    this.el.style.left = `${x}px`;
+    this.el.style.top = `${y}px`;
+    localStorage.setItem(this.key, `${x},${y}`);
+  }
+}
+
+new DraggableIcon('.des.icon.mycv', '.main', 'mycvPosition');
+new CvWindowController('.des.icon.mycv');
