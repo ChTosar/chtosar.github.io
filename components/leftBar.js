@@ -1,8 +1,8 @@
 import i18n from '../utils/lang.js';
-import './components/musicPlayer.js';
-import './components/photos.js';
+import './musicPlayer.js';
+import './photos.js';
 
-const lang = i18n.translations;
+const lang = await i18n.langLoaded();
 
 const apps = [
   {

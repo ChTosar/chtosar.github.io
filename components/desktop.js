@@ -1,5 +1,5 @@
 import './cv.js';
-import './components/bgWaves.js';
+import './bgWaves.js';
 
 const container = document.querySelector('.main');
 /*TODO something more...*/

@@ -1,7 +1,8 @@
 import styles from './calendar.scss';
 import i18n from '../utils/lang.js';
 
-const lang = i18n.translations;
+const lang = await i18n.langLoaded();
+
 class MyCalendar extends HTMLElement {
     constructor() {
         super();

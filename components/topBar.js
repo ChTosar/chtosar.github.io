@@ -1,8 +1,7 @@
 import i18n from '../utils/lang.js';
-import './components/calendar.js';
+import './calendar.js';
 
-const lang = i18n.translations;
-
+const lang = await i18n.langLoaded();
 class ClockController {
   constructor(el) {
     this.timePlace = el;
