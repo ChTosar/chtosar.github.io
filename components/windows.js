@@ -33,6 +33,7 @@ class CustomWindow extends HTMLElement {
     }
 
     render() {
+        /*html*/
         this.shadowRoot.innerHTML = `
             <style>
                 :host {
@@ -105,7 +106,7 @@ class CustomWindow extends HTMLElement {
             document.removeEventListener("mouseup", onMouseUp);
         };
 
-        this.shadowRoot.addEventListener("mousedown", (e) => {
+        this.shadowRoot.addEventListener("mousedown", () => {
             document.querySelectorAll('custom-window').forEach(other => other.classList.remove('selected'));
             this.classList.add('selected');
         });
