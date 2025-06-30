@@ -1,9 +1,10 @@
 import i18n from '../utils/lang.js';
 
+const lang = await i18n.langLoaded();
 export class CvWindowController {
   constructor(cvSelector) {
     this.cvIcon = document.querySelector(cvSelector);
-    this.lang = i18n.lang;
+    this.lang = lang;
     this.translations = i18n.translations;
     this.init();
   }
