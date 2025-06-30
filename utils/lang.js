@@ -34,7 +34,7 @@ class I18n {
 
     if (!this.lang) {
       const baseLang = userLang.split('-')[0];
-      const partialMatch = availableLanguages.find((langCode) =>
+      const partialMatch = this.availableLanguages.find((langCode) =>
         langCode.startsWith(baseLang)
       );
       this.lang = partialMatch || 'en-US';
@@ -44,22 +44,24 @@ class I18n {
   }
 
   async loadLang(lang = this.lang) {
-    return new Promise(async (resolve) => {
-      try {
-        const response = await fetch(`./lang/${lang}.json`);
-        this.translations = await response.json();
-        this.lang = lang;
-        document
-          .querySelector('html')
-          .setAttribute('lang', this.lang.split('-')[0]);
-        resolve(this.translations);
-      } catch (error) {
-        console.error(`Error loading language file for ${lang}:`, error);
-        const response = await fetch('./lang/en-US.json');
-        this.translations = await response.json();
-        resolve(this.translations);
-      }
-    });
+    try {
+      const response = await fetch(`./lang/${lang}.json`);
+      this.translations = await response.json();
+      this.lang = lang;
+      document
+        .querySelector('html')
+        .setAttribute('lang', this.lang.split('-')[0]);
+      return this.translations;
+    } catch (error) {
+      console.error(`Error loading language file for ${lang}:`, error);
+      const response = await fetch('./lang/en-US.json');
+      this.translations = await response.json();
+      return this.translations;
+    }
+  }
+
+  get(lbl) {
+    return this.translations[lbl];
   }
 
   async langLoaded() {
