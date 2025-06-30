@@ -1,11 +1,9 @@
 import i18n from '../utils/lang.js';
 
-const lang = await i18n.langLoaded();
+await i18n.langLoaded();
 export class CvWindowController {
   constructor(cvSelector) {
     this.cvIcon = document.querySelector(cvSelector);
-    this.lang = lang;
-    this.translations = i18n.translations;
     this.init();
   }
 
@@ -27,7 +25,7 @@ export class CvWindowController {
 
     const win = document.createElement('custom-window');
     const icon = document.querySelector('.leftBar .icon.cv');
-    const pdfFile = this.lang === 'es-ES' ? 'CVCH.pdf' : 'CVCH_ING.pdf';
+    const pdfFile = i18n.lang === 'es-ES' ? 'CVCH.pdf' : 'CVCH_ING.pdf';
 
     /*html*/
     win.innerHTML = `
@@ -35,7 +33,7 @@ export class CvWindowController {
         <iframe src="./docs/${pdfFile}" frameborder="0" width="100%" height="100%"></iframe>
       </div>`;
 
-    win.title = this.translations.pdfReader;
+    win.title = i18n.get('pdfReader');
     win.setAttribute('width', '840px');
     win.setAttribute('height', '90%');
     win.setAttribute('name', 'cv');

@@ -1,7 +1,7 @@
 import styles from './calendar.scss';
 import i18n from '../utils/lang.js';
 
-const lang = await i18n.langLoaded();
+await i18n.langLoaded();
 
 class MyCalendar extends HTMLElement {
     constructor() {
@@ -20,7 +20,7 @@ class MyCalendar extends HTMLElement {
                 <span id="year"></span>
                 <div class="buttons">
                     <button id="prev">&lt;</button>
-                    <button id="today">${lang.today}</button>
+                    <button id="today">${i18n.get('today')}</button>
                     <button id="next">&gt;</button>
                 </div>
             </div>

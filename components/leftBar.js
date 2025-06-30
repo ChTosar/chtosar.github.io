@@ -2,18 +2,18 @@ import i18n from '../utils/lang.js';
 import './musicPlayer.js';
 import './photos.js';
 
-const lang = await i18n.langLoaded();
+await i18n.langLoaded();
 
 const apps = [
   {
     name: 'photos',
-    title: lang.photosTitle,
+    title: i18n.get('photosTitle'),
     options: { width: '60%', height: '90%' },
     html: `<photos-page></photos-page>`
   },
   {
     name: 'about',
-    title: lang.aboutTitle,
+    title: i18n.get('aboutTitle'),
     options: { width: '280px', height: '130px' },
     /*html*/
     html: `<div class="linkList" tabindex="0">
@@ -21,11 +21,11 @@ const apps = [
                 <div class="links">
                     <a href="https://github.com/ChTosar/" target="_blank">
                         <svg aria-hidden="true" focusable="false" class="" viewBox="0 0 24 24" width="18" height="18" fill="white" style="display:inline-block;user-select:none;vertical-align:top;overflow:visible"><path d="M12.5.75C6.146.75 1 5.896 1 12.25c0 5.089 3.292 9.387 7.863 10.91.575.101.79-.244.79-.546 0-.273-.014-1.178-.014-2.142-2.889.532-3.636-.704-3.866-1.35-.13-.331-.69-1.352-1.18-1.625-.402-.216-.977-.748-.014-.762.906-.014 1.553.834 1.769 1.179 1.035 1.74 2.688 1.25 3.349.948.1-.747.402-1.25.733-1.538-2.559-.287-5.232-1.279-5.232-5.678 0-1.25.445-2.285 1.178-3.09-.115-.288-.517-1.467.115-3.048 0 0 .963-.302 3.163 1.179.92-.259 1.897-.388 2.875-.388.977 0 1.955.13 2.875.388 2.2-1.495 3.162-1.179 3.162-1.179.633 1.581.23 2.76.115 3.048.733.805 1.179 1.825 1.179 3.09 0 4.413-2.688 5.39-5.247 5.678.417.36.776 1.05.776 2.128 0 1.538-.014 2.774-.014 3.162 0 .302.216.662.79.547C20.709 21.637 24 17.324 24 12.25 24 5.896 18.854.75 12.5.75Z"></path></svg>
-                        <span>${lang.githubLink}</span>
+                        <span>${i18n.get('githubLink')}</span>
                     </a>
                     <a href="https://www.npmjs.com/~chtosar" target="_blank">
                         <svg viewBox="0 0 27.23 27.23" aria-hidden="true" width="18" height="18" ><rect fill="white" width="27.23" height="27.23" rx="2"></rect><polygon fill="black" points="5.8 21.75 13.66 21.75 13.67 9.98 17.59 9.98 17.58 21.76 21.51 21.76 21.52 6.06 5.82 6.04 5.8 21.75"></polygon></svg>
-                        <span>${lang.npmProfileLink}</span>
+                        <span>${i18n.get('npmProfileLink')}</span>
                     </a>
                 </div>
             </div>`,
@@ -34,7 +34,7 @@ const apps = [
 
       typeWriterEffect(
         document.querySelector('.linkList .text'),
-        lang.aboutText
+        i18n.get('aboutText')
       ).then(() => {
         document.querySelector('.linkList .links').style.display = 'block';
 
@@ -83,15 +83,15 @@ const apps = [
   },
   {
     name: 'contact',
-    title: lang.contactTitle,
+    title: i18n.get('contactTitle'),
     options: { width: '280px', height: '130px' },
     html: `<div class="contact">
-            <span>${lang.contactEmailText} <a class="emailLink" href="mailto:christian@tosar.eu">christian@tosar.eu</a>
+            <span>${i18n.get('contactEmailText')} <a class="emailLink" href="mailto:christian@tosar.eu">christian@tosar.eu</a>
             <svg class="copyEmail" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="18px" height="18" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
                 <path d="M29.5,7h-19A1.5,1.5,0,0,0,9,8.5v24A1.5,1.5,0,0,0,10.5,34h19A1.5,1.5,0,0,0,31,32.5V8.5A1.5,1.5,0,0,0,29.5,7ZM29,32H11V9H29Z" class="clr-i-outline clr-i-outline-path-1"/><path d="M26,3.5A1.5,1.5,0,0,0,24.5,2H5.5A1.5,1.5,0,0,0,4,3.5v24A1.5,1.5,0,0,0,5.5,29H6V4H26Z" class="clr-i-outline clr-i-outline-path-2"/>
                 <rect x="0" y="0" width="36" height="36" fill-opacity="0"/>
             </svg></span>
-            </br><span>${lang.linkedinText}
+            </br><span>${i18n.get('linkedinText')}
                 <a href="https://www.linkedin.com/in/christian-tosar-2bb91080/" target="_blank">
                     Linkedin
                 </a>
@@ -105,7 +105,7 @@ const apps = [
           .writeText(email)
           .then(() => {
             const copied = document.createElement('div');
-            copied.innerHTML = `<div class="copied">${lang.emailCopied}</div>`;
+            copied.innerHTML = `<div class="copied">${i18n.get('emailCopied')}</div>`;
             document.body.appendChild(copied);
             const rect = e.target.getBoundingClientRect();
             copied.style.position = 'absolute';
@@ -130,18 +130,18 @@ const apps = [
   },
   {
     name: 'chat',
-    title: lang.chat,
+    title: i18n.get('chat'),
     options: { width: '480px', height: '30%' },
     html: `<div class="chat">
             <pre class="presentation"></pre>
-            <spam class="userInput" style="display:none;">>>><input type="text" placeholder="${lang.chatInput}"/></spam>
+            <spam class="userInput" style="display:none;">>>><input type="text" placeholder="${i18n.get('chatInput')}"/></spam>
             </div>`,
     functions: (win) => {
       const input = win.querySelector('.chat input');
 
       typeWriterEffect(
         document.querySelector('.chat .presentation'),
-        lang.chatPresentation,
+        i18n.get('chatPresentation'),
         12
       ).then(() => {
         document.querySelector('.chat .userInput').style.display = '';
@@ -159,8 +159,8 @@ const apps = [
 
             document.querySelector('custom-window .chat').appendChild(response);
 
-            typeWriterEffect(response, lang.chatResponse, 12).then(() => {
-              response.innerHTML += `</br><a> ✉️ ${lang.contactTitle}</a>`;
+            typeWriterEffect(response, i18n.get('chatResponse'), 12).then(() => {
+              response.innerHTML += `</br><a> ✉️ ${i18n.get('contactTitle')}</a>`;
               response.querySelector('a').addEventListener('click', () => {
                 document.querySelector('.leftBar .icon.contact').click();
               });
@@ -172,7 +172,7 @@ const apps = [
   },
   {
     name: 'mplayer',
-    title: lang.mplayer,
+    title: i18n.get('mplayer'),
     options: { width: '480px', height: '30%' },
     html: `<music-player></music-player>`
   }
@@ -265,7 +265,7 @@ class LeftBar {
         behavior: 'smooth'
       });
 
-      document.querySelector('.title').textContent = lang.defaultTitle;
+      document.querySelector('.title').textContent = i18n.get('defaultTitle');
     });
   }
 
