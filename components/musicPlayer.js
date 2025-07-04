@@ -3,11 +3,12 @@ import { parseBlob } from 'music-metadata';
 import styles from './musicPlayer.scss';
 import i18n from '../utils/lang.js';
 
-const lang = i18n.translations;
+await i18n.langLoaded();
 class MusicPlayer extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
+        this.lang = i18n.translations;
     }
 
     connectedCallback() {
@@ -22,13 +23,13 @@ class MusicPlayer extends HTMLElement {
                 <audio class="audio" src="./music/Agora.mp3" preload="metadata"></audio>
                 <div class="top">
                     <div class="coverPlace">
-                        <img src="./imgs/cover.jpg" alt="cover" class="cover">
+                        <img alt="cover" class="cover">
                     </div>
                     <div class="title">
-                        <span class="name">${lang.songName}</span>
+                        <span class="name">${this.lang.songName}</span>
                         <div class="subtitle">
-                            <span class="album">${lang.songAlbum}</span>
-                            <span class="artist">${lang.songArtist}</span>
+                            <span class="album">${this.lang.songAlbum}</span>
+                            <span class="artist">${this.lang.songArtist}</span>
                         </div>
                     </div>
                 </div>
