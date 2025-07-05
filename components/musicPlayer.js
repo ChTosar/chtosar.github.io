@@ -20,6 +20,7 @@ class MusicPlayer extends HTMLElement {
     /*html*/
     this.shadowRoot.innerHTML = `
             <div class="mplayer">
+                <div class="background"></div>
                 <audio class="audio" src="./music/Start_Slowly.mp3" preload="metadata"></audio>
                 <div class="top">
                     <div class="coverPlace">
@@ -133,6 +134,7 @@ class MusicPlayer extends HTMLElement {
     this.album.textContent = metadata.album || 'Unknown Album';
     this.artist.textContent = metadata.artist || 'Unknown Artist';
     this.cover.src = metadata.cover || './imgs/cover.jpg';
+    this.shadowRoot.querySelector('.background').style.backgroundImage =  'url('+metadata.cover+')';
   }
 
   updateProgress() {
