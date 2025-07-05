@@ -173,7 +173,7 @@ const apps = [
   {
     name: 'mplayer',
     title: i18n.get('mplayer'),
-    options: { width: '480px', height: '500px' },
+    options: { width: '480px', height: '500px', maxHeight: '500' },
     html: `<music-player></music-player>`
   }
 ];
@@ -223,6 +223,7 @@ class App {
     this.win.setAttribute('name', this.name);
     this.win.setAttribute('width', options.width);
     this.win.setAttribute('height', options.height);
+    this.win.setAttribute('max-height', options.maxHeight);
     document.querySelector('container').appendChild(this.win);
     this.win.center();
     this.icon.classList.add('selected');

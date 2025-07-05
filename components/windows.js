@@ -1,40 +1,40 @@
 import styles from './windows.scss';
 class CustomWindow extends HTMLElement {
+  title;
 
-    title;
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+    this.isExpanded = false;
+    this.initialState = {};
+    this.onClose = () => {};
+  }
 
-    constructor() {
-        super();
-        this.attachShadow({ mode: 'open' });
-        this.isExpanded = false;
-        this.initialState = {};
-        this.onClose = () => {};
+  connectedCallback() {
+    this.minWidth = this.getAttribute('min-width') || 100;
+    this.minHeight = this.getAttribute('min-height') || 60;
+    this.maxHeight = this.getAttribute('max-height');
+    this.windowWidth = this.getAttribute('width') || 'auto';
+    this.windowHeight = this.getAttribute('height') || 'auto';
+    this.render();
+    this.addEventListeners();
+
+    if (this.hasAttribute('no-expand')) {
+      this.shadowRoot.querySelector('.actions .big').style.display = 'none';
+    } else if (screen.orientation?.type === 'portrait-primary') {
+      this.toggleExpand({ animate: false });
     }
 
-    connectedCallback() {
-        this.minWidth = this.getAttribute('min-width') || 100;
-        this.minHeight = this.getAttribute('min-height') || 60;
-        this.windowWidth = this.getAttribute('width') || 'auto';
-        this.windowHeight = this.getAttribute('height') || 'auto';
-        this.render();
-        this.addEventListeners();
-
-        if (this.hasAttribute('no-expand')) {
-            this.shadowRoot.querySelector('.actions .big').style.display = 'none';
-        } else if (screen.orientation?.type === "portrait-primary") {
-            this.toggleExpand({animate:false});
-        }
-
-        if (this.hasAttribute('no-resize')) {
-            this.windowDiv.classList.add('no-resize');
-        }
-        this.classList.add('selected');
-        this.onClassChange();
+    if (this.hasAttribute('no-resize')) {
+      this.windowDiv.classList.add('no-resize');
     }
+    this.classList.add('selected');
+    this.onClassChange();
+  }
 
-    render() {
-        /*html*/
-        this.shadowRoot.innerHTML = `
+  render() {
+    /*html*/
+    this.shadowRoot.innerHTML = `
             <style>
                 :host {
                     --window-width: ${this.windowWidth};
@@ -63,289 +63,326 @@ class CustomWindow extends HTMLElement {
             </div>
             </div>
         `;
-        this.shadowRoot.querySelector('style').textContent += styles;
-        this.windowDiv = this.shadowRoot.querySelector(".window");
-        this.header = this.shadowRoot.querySelector(".bar");
+    this.shadowRoot.querySelector('style').textContent += styles;
+    this.windowDiv = this.shadowRoot.querySelector('.window');
+    this.header = this.shadowRoot.querySelector('.bar');
+  }
+
+  addEventListeners() {
+    let offsetX = 0,
+      offsetY = 0;
+
+    const topBar = document.querySelector('.topBar');
+
+    const maxTop = topBar ? topBar.offsetHeight + 1 : 0; // TODO parameters
+    const maxLeft = -160;
+
+    this.header.addEventListener('mousedown', (e) => {
+      offsetX = e.clientX - this.windowDiv.offsetLeft;
+      offsetY = e.clientY - this.windowDiv.offsetTop;
+
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup', onMouseUp);
+    });
+
+    const onMouseMove = (e) => {
+      let newTop = e.clientY - offsetY;
+      let newLeft = e.clientX - offsetX;
+
+      if (newTop < maxTop) {
+        newTop = maxTop;
+      }
+
+      if (newLeft < maxLeft) {
+        newLeft = maxLeft;
+      }
+
+      this.windowDiv.style.left = `${newLeft}px`;
+      this.windowDiv.style.top = `${newTop}px`;
+      this.windowDiv.style.width = `${this.windowDiv.clientWidth}px`;
+    };
+
+    const onMouseUp = () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    this.shadowRoot.addEventListener('mousedown', () => {
+      document
+        .querySelectorAll('custom-window')
+        .forEach((other) => other.classList.remove('selected'));
+      this.classList.add('selected');
+    });
+
+    this.shadowRoot
+      .querySelector('.actions .close')
+      .addEventListener('click', () => {
+        this.close();
+      });
+
+    if (!this.hasAttribute('no-resize')) {
+      this.resize();
     }
 
-    addEventListeners() {
-        let offsetX = 0, offsetY = 0;
-
-        const topBar = document.querySelector('.topBar');
-
-        const maxTop = topBar? topBar.offsetHeight + 1 : 0; // TODO parameters
-        const maxLeft = -160;
-
-        this.header.addEventListener("mousedown", (e) => {
-            offsetX = e.clientX - this.windowDiv.offsetLeft;
-            offsetY = e.clientY - this.windowDiv.offsetTop;
-
-            document.addEventListener("mousemove", onMouseMove);
-            document.addEventListener("mouseup", onMouseUp);
+    if (!this.hasAttribute('no-expand')) {
+      this.shadowRoot
+        .querySelector('.actions .big')
+        .addEventListener('click', () => {
+          this.toggleExpand();
         });
 
-        const onMouseMove = (e) => {
-            let newTop = e.clientY - offsetY;
-            let newLeft = e.clientX - offsetX;
+      this.shadowRoot.querySelector('.bar').addEventListener('dblclick', () => {
+        console.log('double click');
+        this.toggleExpand();
+      });
+    }
 
-            if (newTop < maxTop) {
-                newTop = maxTop;
-            }
+    this.observeClassChanges();
+  }
 
-            if (newLeft < maxLeft) {
-                newLeft = maxLeft;
-            }
+  observeClassChanges() {
+    const observer = new MutationObserver((mutationsList) => {
+      for (let mutation of mutationsList) {
+        if (mutation.attributeName === 'class') {
+          this.onClassChange();
+        }
+      }
+    });
 
-            this.windowDiv.style.left = `${newLeft}px`;
-            this.windowDiv.style.top = `${newTop}px`;
-            this.windowDiv.style.width = `${this.windowDiv.clientWidth}px`;
+    observer.observe(this, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  upadateTitle() {
+    const title = document.querySelector('.topBar .title');
+    if (title) {
+      title.textContent = this.title;
+    }
+  }
+
+  onClassChange() {
+    if (this.classList.contains('selected')) {
+      this.windowDiv.classList.add('selected');
+      this.upadateTitle();
+      const actions = document.querySelector('.topBar .actions');
+
+      document
+        .querySelectorAll('custom-window')
+        .forEach((other) =>
+          other != this ? other.classList.remove('selected') : 0
+        );
+      if (actions) {
+        if (!this.classList.contains('expanded')) {
+          actions.classList.add('hidden');
+        } else {
+          actions.classList.remove('hidden');
+        }
+      }
+    } else {
+      this.windowDiv.classList.remove('selected');
+    }
+
+    if (this.classList.contains('expanded')) {
+      this.windowDiv.classList.add('expanded');
+    } else {
+      this.windowDiv.classList.remove('expanded');
+    }
+  }
+
+  close() {
+    if (this.classList.contains('expanded')) {
+      this.classList.remove('expanded');
+      document.querySelector('.topBar .actions').classList.add('hidden');
+    }
+    this.onClose();
+    window.defaultTitle();
+    this.remove();
+  }
+
+  toggleExpand(options) {
+    if (!this.isExpanded) {
+      this.initialState = {
+        left: this.windowDiv.offsetLeft,
+        top: this.windowDiv.offsetTop,
+        width: this.windowDiv.clientWidth,
+        height: this.windowDiv.clientHeight
+      };
+
+      const startTime = performance.now();
+      const duration = 500;
+      const targetLeft = 100;
+      const targetTop = 0;
+      const targetWidth = window.innerWidth - 100;
+      const targetHeight = window.innerHeight;
+
+      const animateExpand = (time) => {
+        const progress =
+          options?.animate == false
+            ? 100
+            : Math.min((time - startTime) / duration, 1);
+
+        this.windowDiv.style.left = `${
+          this.initialState.left +
+          (targetLeft - this.initialState.left) * progress
+        }px`;
+        this.windowDiv.style.top = `${
+          this.initialState.top + (targetTop - this.initialState.top) * progress
+        }px`;
+        this.windowDiv.style.width = `${
+          this.initialState.width +
+          (targetWidth - this.initialState.width) * progress
+        }px`;
+        this.windowDiv.style.height = `${
+          this.initialState.height +
+          (targetHeight - this.initialState.height) * progress
+        }px`;
+
+        if (progress < 1) {
+          requestAnimationFrame(animateExpand);
+        } else {
+          const leftGap =
+            screen.orientation?.type === 'landscape-primary' ? 100 : 0;
+          this.isExpanded = true;
+          this.windowDiv.classList.add('expanded');
+          this.classList.add('expanded');
+          const container = document.querySelector('container');
+          if (container) {
+            container.scrollTo({
+              left: this.offsetLeft - leftGap
+            });
+            document.querySelector('.actions').classList.remove('hidden');
+          }
+        }
+      };
+
+      requestAnimationFrame(animateExpand);
+    } else {
+      this.windowDiv.style.left = `${this.initialState.left}px`;
+      this.windowDiv.style.top = `${this.initialState.top}px`;
+      this.windowDiv.style.width = `${this.initialState.width}px`;
+      this.windowDiv.style.height = `${this.initialState.height}px`;
+      this.windowDiv.classList.remove('expanded');
+      this.classList.remove('expanded');
+
+      if (document.querySelectorAll('custom-window.expanded').length == 0) {
+        document.querySelector('.actions')?.classList.add('hidden');
+      }
+
+      this.isExpanded = false;
+    }
+  }
+
+  center(options = {}) {
+    const { top = 50, left = 50 } = options;
+    this.windowDiv.style.top = `calc(${top}% + 25px - ${
+      this.windowDiv.offsetHeight / 2
+    }px)`;
+    this.windowDiv.style.left = `calc(${left}% - ${
+      this.windowDiv.offsetWidth / 2
+    }px)`;
+  }
+
+  resize() {
+    let isResizing = false;
+    let startX, startY, startWidth, startHeight, startLeft, startTop;
+    let resizingDirection = {};
+
+    this.windowDiv.addEventListener('mousemove', (e) => {
+      let rect = this.windowDiv.getBoundingClientRect();
+      let isNearLeft = Math.abs(e.clientX - rect.left) < 8;
+      let isNearRight = Math.abs(e.clientX - (rect.left + rect.width)) < 8;
+      let isNearTop = Math.abs(e.clientY - rect.top) < 8;
+      let isNearBottom = Math.abs(e.clientY - (rect.top + rect.height)) < 8;
+
+      if ((isNearLeft && isNearTop) || (isNearRight && isNearBottom)) {
+        this.windowDiv.style.cursor = 'nwse-resize';
+      } else if ((isNearRight && isNearTop) || (isNearLeft && isNearBottom)) {
+        this.windowDiv.style.cursor = 'nesw-resize';
+      } else if (isNearRight || isNearLeft) {
+        this.windowDiv.style.cursor = 'ew-resize';
+      } else if (isNearBottom || isNearTop) {
+        this.windowDiv.style.cursor = 'ns-resize';
+      } else {
+        this.windowDiv.style.cursor = 'default';
+      }
+    });
+
+    this.windowDiv.addEventListener('mousedown', (e) => {
+      let rect = this.windowDiv.getBoundingClientRect();
+      let isNearLeft = Math.abs(e.clientX - rect.left) < 8;
+      let isNearRight = Math.abs(e.clientX - (rect.left + rect.width)) < 8;
+      let isNearTop = Math.abs(e.clientY - rect.top) < 8;
+      let isNearBottom = Math.abs(e.clientY - (rect.top + rect.height)) < 8;
+
+      if (isNearLeft || isNearRight || isNearTop || isNearBottom) {
+        isResizing = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        startWidth = rect.width;
+        startHeight = rect.height;
+        startLeft = rect.left;
+        startTop = rect.top;
+
+        resizingDirection = {
+          left: isNearLeft,
+          right: isNearRight,
+          top: isNearTop,
+          bottom: isNearBottom
         };
 
-        const onMouseUp = () => {
-            document.removeEventListener("mousemove", onMouseMove);
-            document.removeEventListener("mouseup", onMouseUp);
-        };
+        document.addEventListener('mousemove', resize);
+        document.addEventListener('mouseup', stopResize);
+      }
+    });
 
-        this.shadowRoot.addEventListener("mousedown", () => {
-            document.querySelectorAll('custom-window').forEach(other => other.classList.remove('selected'));
-            this.classList.add('selected');
-        });
+    //Something is wrong with this arrow function and this
+    const self = this;
 
-        this.shadowRoot.querySelector('.actions .close').addEventListener("click", () => {
-            this.close();
-        });
+    const resize = (e) => {
+      if (isResizing) {
+        let newWidth = startWidth;
+        let newHeight = startHeight;
+        let newLeft = startLeft;
+        let newTop = startTop;
 
-        if (!this.hasAttribute('no-resize')) {
-            this.resize();
+        if (resizingDirection.right) {
+          newWidth = startWidth + (e.clientX - startX);
+        }
+        if (resizingDirection.bottom) {
+          newHeight = startHeight + (e.clientY - startY);
+        }
+        if (resizingDirection.left) {
+          let diffX = e.clientX - startX;
+          newWidth = startWidth - diffX;
+          newLeft = startLeft + diffX;
+        }
+        if (resizingDirection.top) {
+          let diffY = e.clientY - startY;
+          newHeight = startHeight - diffY;
+          newTop = startTop + diffY;
+        }
+        if (self.maxHeight && newHeight > self.maxHeight) {
+          newHeight = self.maxHeight;
         }
 
-        if (!this.hasAttribute('no-expand')) {
-            this.shadowRoot.querySelector('.actions .big').addEventListener("click", () => {
-                this.toggleExpand();
-            });
-
-            this.shadowRoot.querySelector('.bar').addEventListener("dblclick", () => {
-                console.log('double click');
-                this.toggleExpand();
-            });
+        if (newWidth > self.minWidth) {
+          self.windowDiv.style.width = newWidth + 'px';
+          self.windowDiv.style.left = newLeft + 'px';
         }
-
-        this.observeClassChanges();
-    }
-
-    observeClassChanges() {
-        const observer = new MutationObserver((mutationsList) => {
-            for (let mutation of mutationsList) {
-                if (mutation.attributeName === "class") {
-                    this.onClassChange();
-                }
-            }
-        });
-    
-        observer.observe(this, { attributes: true, attributeFilter: ["class"] });
-    }
-
-    upadateTitle() {
-        const title = document.querySelector('.topBar .title');
-        if (title) {
-            title.textContent = this.title;
+        if (newHeight > self.minHeight) {
+          self.windowDiv.style.height = newHeight + 'px';
+          self.windowDiv.style.top = newTop + 'px';
         }
-    }
-    
-    onClassChange() {
-        if (this.classList.contains("selected")) {
-            this.windowDiv.classList.add("selected");
-            this.upadateTitle();
-            const actions = document.querySelector('.topBar .actions');
+      }
+    };
 
-            document.querySelectorAll('custom-window').forEach(other => other != this ? other.classList.remove('selected'):0);
-            if (actions) {
-                if (!this.classList.contains('expanded')) {
-                    actions.classList.add('hidden');
-                } else {
-                    actions.classList.remove('hidden');
-                }
-            }
-        } else {
-            this.windowDiv.classList.remove("selected");
-        }
+    const stopResize = () => {
+      isResizing = false;
+      document.removeEventListener('mousemove', resize);
+      document.removeEventListener('mouseup', stopResize);
+    };
 
-        if (this.classList.contains("expanded")) {
-            this.windowDiv.classList.add("expanded");
-        } else {
-            this.windowDiv.classList.remove("expanded");
-        }
-    }
-
-    close() {
-        if (this.classList.contains('expanded')) {
-            this.classList.remove('expanded');
-            document.querySelector('.topBar .actions').classList.add('hidden');
-        }
-        this.onClose();
-        window.defaultTitle();
-        this.remove();
-    }
-
-    toggleExpand(options) {
-        if (!this.isExpanded) {
-
-            this.initialState = {
-                left: this.windowDiv.offsetLeft,
-                top: this.windowDiv.offsetTop,
-                width: this.windowDiv.clientWidth,
-                height: this.windowDiv.clientHeight
-            };
-
-            const startTime = performance.now();
-            const duration = 500;
-            const targetLeft = 100;
-            const targetTop = 0;
-            const targetWidth = window.innerWidth - 100;
-            const targetHeight = window.innerHeight;
-
-            const animateExpand = (time) => {
-                const progress = options?.animate == false ? 100 : Math.min((time - startTime) / duration, 1);
-
-                this.windowDiv.style.left = `${this.initialState.left + (targetLeft - this.initialState.left) * progress}px`;
-                this.windowDiv.style.top = `${this.initialState.top + (targetTop - this.initialState.top) * progress}px`;
-                this.windowDiv.style.width = `${this.initialState.width + (targetWidth - this.initialState.width) * progress}px`;
-                this.windowDiv.style.height = `${this.initialState.height + (targetHeight - this.initialState.height) * progress}px`;
-
-                if (progress < 1) {
-                    requestAnimationFrame(animateExpand);
-                } else {
-                    const leftGap = screen.orientation?.type === "landscape-primary" ? 100 : 0;
-                    this.isExpanded = true;
-                    this.windowDiv.classList.add('expanded');
-                    this.classList.add('expanded');
-                    const container = document.querySelector('container');
-                    if (container) {
-                        container.scrollTo({
-                            left: this.offsetLeft-leftGap,
-                        });
-                        document.querySelector('.actions').classList.remove('hidden');
-                    }
-                }
-            }
-
-            requestAnimationFrame(animateExpand);
-
-        } else {
-            this.windowDiv.style.left = `${this.initialState.left}px`;
-            this.windowDiv.style.top = `${this.initialState.top}px`;
-            this.windowDiv.style.width = `${this.initialState.width}px`;
-            this.windowDiv.style.height = `${this.initialState.height}px`;
-            this.windowDiv.classList.remove('expanded');
-            this.classList.remove('expanded');
-
-            if (document.querySelectorAll('custom-window.expanded').length == 0) {
-                document.querySelector('.actions')?.classList.add('hidden');
-            }
-
-            this.isExpanded = false;
-        }
-    }
-
-    center(options = {}) {
-        const { top = 50, left = 50 } = options;
-        this.windowDiv.style.top = `calc(${top}% + 25px - ${this.windowDiv.offsetHeight/2}px)`;
-        this.windowDiv.style.left = `calc(${left}% - ${this.windowDiv.offsetWidth/2}px)`;
-    }
-
-    resize() {
-        let isResizing = false;
-        let startX, startY, startWidth, startHeight, startLeft, startTop;
-        let resizingDirection = {};
-
-        this.windowDiv.addEventListener('mousemove', (e) => {
-            let rect = this.windowDiv.getBoundingClientRect();
-            let isNearLeft = Math.abs(e.clientX - rect.left) < 8;
-            let isNearRight = Math.abs(e.clientX - (rect.left + rect.width)) < 8;
-            let isNearTop = Math.abs(e.clientY - rect.top) < 8;
-            let isNearBottom = Math.abs(e.clientY - (rect.top + rect.height)) < 8;
-
-            if ((isNearLeft && isNearTop) || (isNearRight && isNearBottom)) {
-                this.windowDiv.style.cursor = "nwse-resize"; 
-            } else if ((isNearRight && isNearTop) || (isNearLeft && isNearBottom)) {
-                this.windowDiv.style.cursor = "nesw-resize";
-            } else if (isNearRight || isNearLeft) {
-                this.windowDiv.style.cursor = "ew-resize";
-            } else if (isNearBottom || isNearTop) {
-                this.windowDiv.style.cursor = "ns-resize";  
-            } else {
-                this.windowDiv.style.cursor = "default";
-            }
-        });
-
-        this.windowDiv.addEventListener('mousedown', (e) => {
-            let rect = this.windowDiv.getBoundingClientRect();
-            let isNearLeft = Math.abs(e.clientX - rect.left) < 8;
-            let isNearRight = Math.abs(e.clientX - (rect.left + rect.width)) < 8;
-            let isNearTop = Math.abs(e.clientY - rect.top) < 8;
-            let isNearBottom = Math.abs(e.clientY - (rect.top + rect.height)) < 8;
-
-            if (isNearLeft || isNearRight || isNearTop || isNearBottom) {
-                isResizing = true;
-                startX = e.clientX;
-                startY = e.clientY;
-                startWidth = rect.width;
-                startHeight = rect.height;
-                startLeft = rect.left;
-                startTop = rect.top;
-
-                resizingDirection = { left: isNearLeft, right: isNearRight, top: isNearTop, bottom: isNearBottom };
-
-                document.addEventListener('mousemove', resize);
-                document.addEventListener('mouseup', stopResize);
-            }
-        });
-
-        const resize = (e) => {
-
-            if (isResizing) {
-                let newWidth = startWidth;
-                let newHeight = startHeight;
-                let newLeft = startLeft;
-                let newTop = startTop;
-
-                if (resizingDirection.right) {
-                    newWidth = startWidth + (e.clientX - startX);
-                }
-                if (resizingDirection.bottom) {
-                    newHeight = startHeight + (e.clientY - startY);
-                }
-                if (resizingDirection.left) {
-                    let diffX = e.clientX - startX;
-                    newWidth = startWidth - diffX;
-                    newLeft = startLeft + diffX;
-                }
-                if (resizingDirection.top) {
-                    let diffY = e.clientY - startY;
-                    newHeight = startHeight - diffY;
-                    newTop = startTop + diffY;
-                }
-
-                if (newWidth > this.minWidth) {
-                    this.windowDiv.style.width = newWidth + 'px';
-                    this.windowDiv.style.left = newLeft + 'px';
-                }
-                if (newHeight > this.minHeight) {
-                    this.windowDiv.style.height = newHeight + 'px';
-                    this.windowDiv.style.top = newTop + 'px';
-                }
-            }
-        }
-
-        const stopResize = () => {
-            isResizing = false;
-            document.removeEventListener('mousemove', resize);
-            document.removeEventListener('mouseup', stopResize);
-        }
-
-        this.stopResize = stopResize;
-    }
-
+    this.stopResize = stopResize;
+  }
 }
 
 customElements.define('custom-window', CustomWindow);
