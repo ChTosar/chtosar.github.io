@@ -20,7 +20,7 @@ class MusicPlayer extends HTMLElement {
         /*html*/
         this.shadowRoot.innerHTML = `
             <div class="mplayer">
-                <audio class="audio" src="./music/Agora.mp3" preload="metadata"></audio>
+                <audio class="audio" src="./music/Start_Slowly.mp3" preload="metadata"></audio>
                 <div class="top">
                     <div class="coverPlace">
                         <img alt="cover" class="cover">
