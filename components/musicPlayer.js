@@ -36,17 +36,19 @@ class MusicPlayer extends HTMLElement {
                 <div class="equalizer">
                     <classic-equalizer></classic-equalizer>   
                 </div>     
-                <div class="mProgress">
-                    <div class="progressBar">
-                        <div class="progressBarFill"></div>
+                <div class="bottom">
+                    <div class="controls">
+                        <div class="playPause">
+                            <svg class="play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M8 5v14l11-7z" fill="#fff"/></svg>
+                            <svg class="pause hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6 19h4V5H6zm8-14v14h4V5z" fill="#fff"/></svg>
+                        </div>
                     </div>
-                    <span class="time">00:00</span>
-                    <span class="duration">00:00</span>
-                </div>
-                <div class="controls">
-                    <div class="playPause">
-                        <svg class="play" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M8 5v14l11-7z" fill="#fff"/></svg>
-                        <svg class="pause hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18"><path d="M6 19h4V5H6zm8-14v14h4V5z" fill="#fff"/></svg>
+                    <div class="mProgress">
+                        <div class="progressBar">
+                            <div class="progressBarFill"></div>
+                        </div>
+                        <span class="time">00:00</span>
+                        <span class="duration">00:00</span>
                     </div>
                 </div>
             </div>`;
@@ -143,15 +145,25 @@ class MusicPlayer extends HTMLElement {
 
   toggleCoverAndEqualizer() {
     const eqPlace = this.shadowRoot.querySelector('.equalizer');
-    if (!this.coverPlace.querySelector('classic-equalizer')) {
-      eqPlace.appendChild(this.cover);
-      this.coverPlace.appendChild(this.equalizer);
-      this.equalizer.setAttribute('height', 60);
-    } else {
-      eqPlace.appendChild(this.equalizer);
-      this.coverPlace.appendChild(this.cover);
-      this.equalizer.setAttribute('height', 240);
-    }
+    
+    this.coverPlace.classList.add('transition');
+
+    setTimeout(() => {
+
+        if (!this.coverPlace.querySelector('classic-equalizer')) {
+            eqPlace.appendChild(this.cover);
+            this.coverPlace.appendChild(this.equalizer);
+            this.equalizer.setAttribute('height', 60);
+        } else {
+            eqPlace.appendChild(this.equalizer);
+            this.coverPlace.appendChild(this.cover);
+            this.equalizer.setAttribute('height', 240);
+        }
+
+        this.coverPlace.classList.remove('transition');
+
+    }, 180);
+    
   }
 
   formatTime(seconds) {

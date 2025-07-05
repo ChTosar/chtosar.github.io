@@ -15,6 +15,11 @@
         height: 60px;
         overflow: hidden;
         cursor: pointer;
+        transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+        &.transition {
+            transform: translateY(300%) translateX(300%) scale(4);
+        }
 
         img {
             width: 60px;
@@ -50,6 +55,10 @@
     }
 }
 
+.bottom {
+    display: flex;
+}
+
 .mProgress {
     width: 100%;
     display: flex;
@@ -62,7 +71,7 @@
     .progressBar {
         width: 100%;
         height: 5px;
-        background-color: var(--withe-contrast);
+        background-color: #222;
         border-radius: 5px;
         position: relative;
         margin-bottom: 1rem;
@@ -84,6 +93,7 @@
     padding: 1rem;
     box-sizing: border-box;
     display: flex;
+    padding-inline-end: 0.5rem;
 
     .playPause {
         background: #222222;
@@ -94,7 +104,6 @@
         justify-content: center;
         align-items: center;
         cursor: pointer;
-        margin-inline-end: 1rem;
 
         &:active {
             background: var(--withe-contrast);

@@ -173,7 +173,7 @@ const apps = [
   {
     name: 'mplayer',
     title: i18n.get('mplayer'),
-    options: { width: '480px', height: '500px', maxHeight: '500' },
+    options: { width: '480px', height: '450px', maxHeight: '500' },
     html: `<music-player></music-player>`
   }
 ];
