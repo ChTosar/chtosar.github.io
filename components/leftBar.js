@@ -84,7 +84,7 @@ const apps = [
   {
     name: 'contact',
     title: i18n.get('contactTitle'),
-    options: { width: '280px', height: '130px' },
+    options: { height: '130px' },
     html: `<div class="contact">
             <span>${i18n.get('contactEmailText')} <a class="emailLink" href="mailto:christian@tosar.eu">christian@tosar.eu</a>
             <svg class="copyEmail" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="18px" height="18" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
@@ -189,8 +189,6 @@ class App {
     this.options = app.options;
     this.icon = document.querySelector(`.leftBar .icon.${this.name}`);
 
-    console.log(`Initializing app: ${this.name}`);
-
     this.click();
   }
 
@@ -267,6 +265,9 @@ class LeftBar {
       });
 
       document.querySelector('.title').textContent = i18n.get('defaultTitle');
+      document.querySelector('.leftBar .icon.selected').classList.remove('selected');
+      document.querySelector('custom-window.selected').classList.remove('selected');
+      document.querySelector('.topBar .actions').classList.add('hidden');
     });
   }
 
