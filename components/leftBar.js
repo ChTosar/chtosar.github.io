@@ -86,7 +86,9 @@ const apps = [
     title: i18n.get('contactTitle'),
     options: { height: '130px' },
     html: `<div class="contact">
-            <span>${i18n.get('contactEmailText')} <a class="emailLink" href="mailto:christian@tosar.eu">christian@tosar.eu</a>
+            <span>${i18n.get(
+              'contactEmailText'
+            )} <a class="emailLink" href="mailto:christian@tosar.eu">christian@tosar.eu</a>
             <svg class="copyEmail" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#fff" width="18px" height="18" viewBox="0 0 36 36" version="1.1" preserveAspectRatio="xMidYMid meet">
                 <path d="M29.5,7h-19A1.5,1.5,0,0,0,9,8.5v24A1.5,1.5,0,0,0,10.5,34h19A1.5,1.5,0,0,0,31,32.5V8.5A1.5,1.5,0,0,0,29.5,7ZM29,32H11V9H29Z" class="clr-i-outline clr-i-outline-path-1"/><path d="M26,3.5A1.5,1.5,0,0,0,24.5,2H5.5A1.5,1.5,0,0,0,4,3.5v24A1.5,1.5,0,0,0,5.5,29H6V4H26Z" class="clr-i-outline clr-i-outline-path-2"/>
                 <rect x="0" y="0" width="36" height="36" fill-opacity="0"/>
@@ -105,7 +107,9 @@ const apps = [
           .writeText(email)
           .then(() => {
             const copied = document.createElement('div');
-            copied.innerHTML = `<div class="copied">${i18n.get('emailCopied')}</div>`;
+            copied.innerHTML = `<div class="copied">${i18n.get(
+              'emailCopied'
+            )}</div>`;
             document.body.appendChild(copied);
             const rect = e.target.getBoundingClientRect();
             copied.style.position = 'absolute';
@@ -134,7 +138,9 @@ const apps = [
     options: { width: '480px', height: '30%' },
     html: `<div class="chat">
             <pre class="presentation"></pre>
-            <spam class="userInput" style="display:none;">>>><input type="text" placeholder="${i18n.get('chatInput')}"/></spam>
+            <spam class="userInput" style="display:none;">>>><input type="text" placeholder="${i18n.get(
+              'chatInput'
+            )}"/></spam>
             </div>`,
     functions: (win) => {
       const input = win.querySelector('.chat input');
@@ -159,12 +165,16 @@ const apps = [
 
             document.querySelector('custom-window .chat').appendChild(response);
 
-            typeWriterEffect(response, i18n.get('chatResponse'), 12).then(() => {
-              response.innerHTML += `</br><a> ✉️ ${i18n.get('contactTitle')}</a>`;
-              response.querySelector('a').addEventListener('click', () => {
-                document.querySelector('.leftBar .icon.contact').click();
-              });
-            });
+            typeWriterEffect(response, i18n.get('chatResponse'), 12).then(
+              () => {
+                response.innerHTML += `</br><a> ✉️ ${i18n.get(
+                  'contactTitle'
+                )}</a>`;
+                response.querySelector('a').addEventListener('click', () => {
+                  document.querySelector('.leftBar .icon.contact').click();
+                });
+              }
+            );
           }
         }
       });
@@ -175,6 +185,32 @@ const apps = [
     title: i18n.get('mplayer'),
     options: { width: '480px', height: '450px', maxHeight: '500' },
     html: `<music-player></music-player>`
+  },
+  {
+    name: 'myCars',
+    title: 'myCars',
+    options: { width: '80%', height: '90%' },
+    html: `<div class="ifContent" style="height:100%;"><iframe frameborder="0" height="100%" width="100%" src='https://tosar.eu/my-cars'></iframe></div>`,
+    functions: (win) => {//TODO remove this
+      const iframe = win.querySelector('iframe');
+      const activateIframe = () => {
+        iframe.style.pointerEvents = 'auto';
+        iframe.click();
+        iframe.addEventListener(
+          'mouseleave',
+          () => {
+            iframe.style.pointerEvents = 'none';
+          },
+          { once: true }
+        );
+      };
+      win
+        .querySelector('.ifContent')
+        .addEventListener('wheel', activateIframe);
+      win
+        .querySelector('.ifContent')
+        .addEventListener('click', activateIframe);
+    }
   }
 ];
 
@@ -265,8 +301,12 @@ class LeftBar {
       });
 
       document.querySelector('.title').textContent = i18n.get('defaultTitle');
-      document.querySelector('.leftBar .icon.selected').classList.remove('selected');
-      document.querySelector('custom-window.selected').classList.remove('selected');
+      document
+        .querySelector('.leftBar .icon.selected')
+        .classList.remove('selected');
+      document
+        .querySelector('custom-window.selected')
+        .classList.remove('selected');
       document.querySelector('.topBar .actions').classList.add('hidden');
     });
   }
