@@ -190,7 +190,7 @@ const apps = [
     name: 'myCars',
     title: 'myCars',
     options: { width: '80%', height: '90%' },
-    html: `<div class="ifContent" style="height:100%;"><iframe frameborder="0" height="100%" width="100%" src='https://tosar.eu/my-cars'></iframe></div>`,
+    html: `<div class="ifContent" style="height:100%;"><iframe frameborder="0" height="100%" width="100%" src='https://tosar.eu/my-cars/'></iframe></div>`,
     functions: (win) => {//TODO remove this
       const iframe = win.querySelector('iframe');
       const activateIframe = () => {
