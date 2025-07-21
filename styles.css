@@ -519,6 +519,7 @@ custom-window .pdfContent {
     .leftBar {
         width: 100%;
         position: fixed;
+        flex-wrap: nowrap;
         height: 60px;
         bottom: 0;
         justify-content: space-around;
@@ -546,6 +547,7 @@ custom-window .pdfContent {
 
     .leftBar .icon {
         width: 60px;
+        height: 60px;
         padding: 0;
         margin: 0;
     }
