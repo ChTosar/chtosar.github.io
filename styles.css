@@ -98,8 +98,6 @@ custom-window.selected {
 
 .leftBar {
     z-index: 10;
-    transform: translateX(-100px);
-    animation: showLeftBar 1s ease-in-out 1.2s forwards;
     display: flex;
     height: calc(100vh - 25px);
     margin-top: 25px;
@@ -111,6 +109,13 @@ custom-window.selected {
     align-content: center;
     backdrop-filter: blur(4px);
     background-color: #000000ad;
+}
+
+@media (orientation: landscape) {
+    .leftBar {
+        transform: translateX(-100px);
+        animation: showLeftBar 1s ease-in-out 1.2s forwards;
+    }
 }
 
 .leftBar::after {
@@ -190,6 +195,12 @@ container {
     width: calc(100% - 100px);
     flex-wrap: nowrap;
     display: flex;
+}
+
+@supports (height: 100dvh) {
+  container {
+    height: 100dvh;
+  }
 }
 
 container>div{
@@ -525,9 +536,16 @@ custom-window .pdfContent {
         justify-content: space-around;
         border-top: 0.5px solid var(--withe-contrast);
     }
+    
+   .leftBar .icon.selected::before {
+        display: none;
+    }
+    .leftBar .icon.selected::after {
+        box-shadow: 0 0 20px 10px rgb(255, 245, 135);
+    }
 
     .leftBar .icon.selected::before {
-        display: none;
+       display: none;
     }
 
     container {
