@@ -84,29 +84,53 @@ class Photos extends HTMLElement {
 
   events() {
     const parent = this.shadowRoot.querySelector('.photos');
+    let ticking = false;
+
     parent.addEventListener('scroll', () => {
-      this.shadowRoot.querySelectorAll('.photo').forEach((img) => {
-        const rectParent = parent.getBoundingClientRect();
-        const rect = img.getBoundingClientRect();
-        const paddingTop = parseInt(
-          window.getComputedStyle(parent).paddingTop.replace('px', '')
-        );
+      if (!ticking) {
+        console.log(parent.scrollTop);
+        ticking = true;
+        updatePhotos();
+      }
+    });
+
+    const updatePhotos = () => {
+      const rectParent = parent.getBoundingClientRect();
+      const paddingTop = parseInt(
+        window.getComputedStyle(parent).paddingTop || '0',
+        10
+      );
+
+      const photos = this.shadowRoot.querySelectorAll('.photo');
+
+      photos.forEach((photo) => {
+        const rect = photo.getBoundingClientRect();
         const relativeTop = rect.top - rectParent.top;
 
-        if (relativeTop < paddingTop) {
-          const top = relativeTop - paddingTop;
+        const imgEl = photo.querySelector('img');
+
+        if (relativeTop === paddingTop) {
+          const realOffset = parseInt(photo.getAttribute('offsetTop')) || 0;
+          const offset = ((parent.scrollTop - realOffset) * 0.1).toFixed(5);
+
+          const scale = `0.${this.scaling(relativeTop)}`;
           window.requestAnimationFrame(() => {
-            img.querySelector('img').style.transform = `translateY(${-(
-              top * 0.9
-            )}px) scale(0.${this.scaling(relativeTop)})`;
-            img.style.zIndex = 1;
+            imgEl.style.transform = `translateY(${-offset}px) scale(${scale})`;
+            photo.style.zIndex = 1;
+            ticking = false;
           });
         } else {
-          img.querySelector('img').style.transform = '';
-          img.style.zIndex = '';
+          const offsetTop = photo.offsetTop - parent.offsetTop;
+          photo.setAttribute('offsetTop', offsetTop);
+
+          window.requestAnimationFrame(() => {
+            imgEl.style.transform = '';
+            photo.style.zIndex = '';
+            ticking = false;
+          });
         }
       });
-    });
+    };
 
     const resizeObserver = new ResizeObserver((entries) => {
       for (let entry of entries) {

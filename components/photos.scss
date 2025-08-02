@@ -1,56 +1,56 @@
-.photos{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    column-gap: 0.5rem;
-    justify-content: space-between;
-    align-content: flex-start;
+.photos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 0.5rem;
+  justify-content: space-between;
+  align-content: flex-start;
+  box-sizing: border-box;
+  overflow: auto;
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+  padding-top: calc(26px + 1rem) !important;
+  padding-bottom: 10rem;
+
+  &.smallSize {
+    .photo {
+      width: calc(33% - 1rem);
+    }
+  }
+
+  .photo {
+    width: calc(25% - 0.5rem);
+    margin-bottom: 1rem;
+    aspect-ratio: 3 / 4;
+    z-index: 2;
     box-sizing: border-box;
-    overflow: auto;
-    height: 100%;
-    width: 100%;
-    padding: 1rem;
-    padding-top: calc(26px + 1rem) !important;
-    padding-bottom: 10rem;
+    box-shadow: 0 0px 10px 0px #00000050;
+    position: sticky;
+    top: 0;
 
-    &.smallSize{
-        .photo{
-            width: calc(33% - 1rem);
-        }
+    @media screen and (max-width: 800px) {
+      width: calc(33% - 1rem);
     }
 
-    .photo{
-        width: calc(25% - 0.5rem);
-        margin-bottom: 1rem;
-        aspect-ratio: 3 / 4;
-        z-index: 2;
-        box-sizing: border-box;
-        box-shadow: 0 0px 10px 0px #00000050;
-
-        @media screen and (max-width: 800px) {
-            width: calc(33% - 1rem);
-        }
-
-        &:hover img {
-        transition: filter 200ms ease-in-out;
-        filter: brightness(1.08);
-        }
-
-        &.expanded {
-            padding-top: 3rem;
-        }
-
-        img{
-            width: 100%;
-            border-radius: 7px;
-            aspect-ratio: 3 / 4;
-            object-fit: cover; 
-            cursor: pointer;
-            user-select: none;
-            -webkit-user-select: none;
-        }
+    &:hover img {
+      transition: filter 200ms ease-in-out;
+      filter: brightness(1.08);
     }
+
+    &.expanded {
+      padding-top: 3rem;
+    }
+
+    img {
+      width: 100%;
+      will-change: transform;
+      border-radius: 7px;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      cursor: pointer;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+  }
 }
-
-
-
